@@ -10,6 +10,40 @@ A scout can also sign up with Player Link to find talented footballers and get m
 
 ### User stories
 
+    1. As a new visitor to the website I want to navigate the site with ease and no confusion.
+
+    2. As a new visitor to the website I want to be able to easily find where to register as a scout or as a player.
+
+    3. As a new visitor to the website I want to be able to login after I have registered with no confusion.
+
+    4. As a new visitor to the website I want to be able to logout of my profile with no confusion.
+
+    5. As a new visitor to the website I want to be able to find out more about player link in an about section.
+    
+    6. As a new player or scout I want to be able to view my profile after I have logged in.
+    
+    7. As a new player or scout I want to be able to edit my profile and add any information I wish to add to my profile. 
+
+    8. As a new player or scout I want to be able to add a profile picture to my profile. 
+    
+    9. As a player I want to be able to create an event and edit that event to display the event that I want to show.
+    
+    10. As a player I want to be able to delete an event.
+
+    11. As a player I want to be able to view which scouts are going to be attending my event.
+    
+    12. As a player I want to be able to view any scouts that have started scouting my profile.
+    
+    13. As a scout I want to be able to serach for players 
+
+    14. As a scout I want to be able to start scouting a player after I have clicked the scout button on the players profile
+   
+    15. As a scout I want to be able to view my events and open them to see information about such events.
+    
+    16. As a scout I want to be able to view all my scouted players and view thier profiles.
+   
+    17. As a new visitor to the website I want to be able to view the website on phone desktop and tablet
+
 ### Wireframes
 
 ## Features
