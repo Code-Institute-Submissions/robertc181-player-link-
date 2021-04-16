@@ -48,9 +48,16 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 ### Wireframes
 
+- [Wireframes](https://github.com/robertc181/player-link-/tree/master/Wireframes)
+
 ## Features
 
 ### Plan
+
+- [Flow Chart](https://github.com/robertc181/player-link-/blob/master/Plan/IMG_0679.jpg)
+- [Routing plan](https://github.com/robertc181/player-link-/blob/master/Plan/IMG_0691.jpg)
+- [Data Structure](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure)
+
 
 ### Existing Features
 
