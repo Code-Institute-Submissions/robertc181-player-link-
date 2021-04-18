@@ -59,7 +59,9 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 - [Data Structure](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure)
 
 
-### Existing Features
+### Changes to plan
+
+1.Instead of creating to diferent profile types for a scout and a player I am now using a generic users database to store a users data where a user has a user_type which will be a player or a scout
 
 ### Existing Features
 

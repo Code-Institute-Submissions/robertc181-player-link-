@@ -3,9 +3,10 @@
 
 <h1>hello</h1>
 
-    {% for player in players %}
-        {{ player.name }}<br>
-        {{ player.password }}<br>
+    {% for user in users %}
+        {{ user.user_type }}<br>
+        {{ user.name }}<br>
+        {{ user.password }}<br>
     {% endfor %}
 
 {% endblock %}
