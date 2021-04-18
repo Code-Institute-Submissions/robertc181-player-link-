@@ -1,7 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>register</h2>
+<h2>Register</h2>
     <form>
-        <input type="text" placeholder="name">
+        <!-- player -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+                I am a player
+            </label>
+        </div>
+        <!-- scout -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                I am a scout
+            </label>
+        </div>
+        <!-- username -->
+        <div class="mb-3 col-md-6">
+            <label for="exampleInputEmail1" class="form-label">Usernane</label>
+            <input type="email" class="form-control" id="" aria-describedby="emailHelp">
+        </div>
+        <!-- password -->
+        <div class="mb-3 col-md-6">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {% endblock %}
