@@ -37,7 +37,8 @@ def register():
             return redirect(url_for("register"))
 
         register = {
-            "select-role": request.form.get("select-role"),
+            "name": request.form.get("name").lower(),
+            "user-type": request.form.get("user-type"),
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
         }
@@ -49,6 +50,7 @@ def register():
         return redirect(url_for("profile", username=session["user"]))
 
     return render_template("register.html")
+
 
 
 if __name__ == "__main__":

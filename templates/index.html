@@ -3,10 +3,6 @@
 <h2>index</h2>
     <button><a href="{{ url_for('register') }}">register</a></button>
 
-    {% for user in users %}
-        {{ user.user_type }}<br>
-        {{ user.name }}<br>
-        {{ user.password }}<br>
-    {% endfor %}
+   
 
 {% endblock %}

@@ -3,15 +3,22 @@
 <h2>Register</h2>
     <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('register')}}">
         <!-- player or scout -->
-        <select class="form-select" name="user_type" aria-label="Default select example">
-            <option value="" disabled selected>Please Select</option>
-            <option value="1">Player</option>
-            <option value="2">Scout</option>
-          </select>
+        <div class="mb-3 col-md-6">
+            <select class="form-select" name="user_type" aria-label="Default select example">
+                <option value="" disabled selected>Please Select</option>
+                <option value="1">Player</option>
+                <option value="2">Scout</option>
+              </select>
+        </div>
         <!-- username -->
         <div class="mb-3 col-md-6">
             <label for="username" class="form-label">Username</label>
             <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" required>
+        </div>
+        <!-- name -->
+        <div class="mb-3 col-md-6">
+            <label for="name" class="form-label">Full name</label>
+            <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$" required>
         </div>
         <!-- password -->
         <div class="mb-3 col-md-6">
