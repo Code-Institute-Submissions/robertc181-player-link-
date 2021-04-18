@@ -36,9 +36,10 @@ def register():
             flash("Username already exists")
             return redirect(url_for("register"))
 
+
         register = {
             "name": request.form.get("name").lower(),
-            "user-type": request.form.get("user-type"),
+            "user_type": request.form.get("user_type"),
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
         }
@@ -46,12 +47,24 @@ def register():
         mongo.db.users.insert_one(register)
 
         session["user"] = request.form.get("username").lower()
+        session["user_type"] = request.form.get("user_type").lower()
         flash("Registration Successful!")
-        return redirect(url_for("profile", username=session["user"]))
+        return redirect(url_for("profile", username=session["user"], user_type=session["user_type"]))
 
     return render_template("register.html")
 
+@app.route("/profile/<user_type>/<username>", methods=["GET", "POST"])
+def profile(user_type, username):
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
 
+    user_type = mongo.db.users.find_one(
+        {"user_type": session["user_type"]})["user_type"]
+
+    
+
+    if session["user"] and session["user_type"]:
+        return render_template("profile.html", username=username, user_type=user_type)
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
