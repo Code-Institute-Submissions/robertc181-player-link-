@@ -18,9 +18,10 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+
 @app.route("/")
 @app.route("/index")
-def idx():
+def index():
     users = mongo.db.users.find()
     return render_template("index.html", users=users)
 
@@ -36,14 +37,13 @@ def register():
             flash("Username already exists")
             return redirect(url_for("register"))
 
-
         register = {
             "name": request.form.get("name").lower(),
             "user_type": request.form.get("user_type"),
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
         }
-            
+
         mongo.db.users.insert_one(register)
 
         session["user"] = request.form.get("username").lower()
@@ -53,6 +53,7 @@ def register():
 
     return render_template("register.html")
 
+
 @app.route("/profile/<user_type>/<username>", methods=["GET", "POST"])
 def profile(user_type, username):
     username = mongo.db.users.find_one(
@@ -61,10 +62,19 @@ def profile(user_type, username):
     user_type = mongo.db.users.find_one(
         {"user_type": session["user_type"]})["user_type"]
 
-    
-
     if session["user"] and session["user_type"]:
         return render_template("profile.html", username=username, user_type=user_type)
+
+
+@app.route("/logout")
+def logout():
+    # remove user from session cookie
+    flash("You have been logged out")
+    session.pop("user")
+    session.pop("user_type")
+    return redirect(url_for("index"))
+
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
