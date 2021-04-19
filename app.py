@@ -54,16 +54,50 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/profile/<user_type>/<username>", methods=["GET", "POST"])
-def profile(user_type, username):
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # check if username exists in db
+        check_user = mongo.db.users.find_one(
+            {"username": request.form.get("username").lower()})
+            
+            
+        # find_user_type = mongo.db.users.find({"user_type"})
+        
+
+        if check_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    check_user["password"], request.form.get("password")):
+                        session["user"] = request.form.get("username").lower()
+                        # session["user_type"] = mongo.db.users.find_one({"user_type"})
+                        print({"user_type"})
+                        flash("Welcome, {}".format(
+                            request.form.get("username")))
+                        return redirect(url_for(
+                            "profile", username=session["user"]))
+            else:
+                # invalid password match
+                flash("Incorrect Username and/or Password")
+                return redirect(url_for("login"))
+
+        else:
+            # username doesn't exist
+            flash("Incorrect Username and/or Password")
+            return redirect(url_for("login"))
+
+    return render_template("login.html")
+
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
 
-    user_type = mongo.db.users.find_one(
-        {"user_type": session["user_type"]})["user_type"]
+    if session["user"]:
+        return render_template("profile.html", username=username)
 
-    if session["user"] and session["user_type"]:
-        return render_template("profile.html", username=username, user_type=user_type)
+    return redirect(url_for("login"))
 
 
 @app.route("/logout")
