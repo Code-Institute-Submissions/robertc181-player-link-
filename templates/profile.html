@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h3>{{ user_type }},{{ username }}'s Profile</h3>
-
-    <button><a href="{{ url_for('logout') }}">Logout</a></button>
+    {% if user_type == "player" %}
+        <h1>its a player</h1>
+    {% else %}
+    	<h1>its a scout</h1>
+    {% endif %}   
 
 {% endblock %}
