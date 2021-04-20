@@ -60,11 +60,7 @@ def login():
         # check if username exists in db
         check_user = mongo.db.users.find_one(
             {"username": request.form.get("username").lower()})
-            
-            
-        # find_user_type = mongo.db.users.find({"user_type"})
         
-
         if check_user:
             # ensure hashed password matches user input
             if check_password_hash(
@@ -94,8 +90,17 @@ def profile(username):
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
 
-    if session["user"]:
-        return render_template("profile.html", username=username)
+    profile = mongo.db.users.find({"username":username})
+
+    for user in profile:
+        user_type = user.get("user_type")
+
+        session["user_type"] = user_type
+
+
+    if session["user"] and session["user_type"]:
+        return render_template("profile.html", username=username,
+        user_type=user_type)
 
     return redirect(url_for("login"))
 
@@ -105,7 +110,6 @@ def logout():
     # remove user from session cookie
     flash("You have been logged out")
     session.pop("user")
-    session.pop("user_type")
     return redirect(url_for("index"))
 
 
