@@ -61,7 +61,9 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 ### Changes to plan
 
-1.Instead of creating to diferent profile types for a scout and a player I am now using a generic users database to store a users data where a user has a user_type which will be a player or a scout
+1. Instead of creating to diferent profile types for a scout and a player I am now using a generic users database to store a users data where a user has a user_type which will be a player or a scout
+
+2. I have changed the data structure to have a users Db and a profiles db so a user registers and creates a user then can create profile to create thier profile
 
 ### Existing Features
 

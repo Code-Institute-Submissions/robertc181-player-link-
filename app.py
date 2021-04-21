@@ -38,7 +38,6 @@ def register():
             return redirect(url_for("register"))
 
         register = {
-            "name": request.form.get("name").lower(),
             "user_type": request.form.get("user_type"),
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password"))
@@ -110,9 +109,35 @@ def logout():
     # remove user from session cookie
     flash("You have been logged out")
     session.pop("user")
+    session.pop("user_type")
     return redirect(url_for("index"))
 
 
+@app.route("/edit-profile", methods=["GET", "POST"])
+def edit_profile():
+    if request.method == "POST":
+
+        username = session["user"]
+        print(username)
+
+        edit_profile = {
+            "name": request.form.get("name").lower(),
+            "profile_pic": request.form.get("profile_pic"),
+            "DOB": request.form.get("DOB").lower(),
+            "current_team": request.form.get("current_team").lower(),
+            "bio": request.form.get("bio").lower(),
+            "gender": request.form.get("gender").lower(),
+            "position": request.form.get("position"),
+            "user": session["user"],
+
+        }
+
+        mongo.db.profiles.insert(edit_profile)
+
+        flash("edit Successful!")
+        return redirect(url_for("profile", username=session["user"], user_type=session["user_type"]))
+
+    return render_template("edit-profile.html")
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
