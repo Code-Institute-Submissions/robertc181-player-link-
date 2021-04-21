@@ -1,7 +1,9 @@
 {% block player %}
-{% extends "base.html" %}
+
     <h1>this is a player</h1>
 
     <button><a href="{{ url_for('logout') }}">logout</a></button>
 
+    <button><a href="{{ url_for('edit_profile') }}">Edit profile</a></button>
+    
 {% endblock %}
