@@ -25,7 +25,7 @@ def index():
     users = mongo.db.users.find()
     return render_template("index.html", users=users)
 
-
+# REGISTER CODE
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -48,11 +48,24 @@ def register():
         session["user"] = request.form.get("username").lower()
         session["user_type"] = request.form.get("user_type").lower()
         flash("Registration Successful!")
-        return redirect(url_for("profile", username=session["user"], user_type=session["user_type"]))
+        return redirect(url_for("registered", username=session["user"], user_type=session["user_type"]))
 
     return render_template("register.html")
 
 
+@app.route("/registered/<username>", methods=["GET", "POST"])
+def registered(username):
+    username = session["user"]
+    user_type = session["user_type"]
+
+    if session["user"]:
+        return render_template("create-profile.html", username=username)
+
+    return redirect(url_for("login"))
+
+
+
+# LOGIN CODE
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -65,12 +78,11 @@ def login():
             if check_password_hash(
                     check_user["password"], request.form.get("password")):
                         session["user"] = request.form.get("username").lower()
-                        # session["user_type"] = mongo.db.users.find_one({"user_type"})
                         print({"user_type"})
                         flash("Welcome, {}".format(
                             request.form.get("username")))
-                        return redirect(url_for(
-                            "profile", username=session["user"]))
+                        return redirect(url_for("read_profile", 
+                            profilename=session["user"], username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -83,27 +95,6 @@ def login():
 
     return render_template("login.html")
 
-
-@app.route("/profile/<username>", methods=["GET", "POST"])
-def profile(username):
-    username = mongo.db.users.find_one(
-        {"username": session["user"]})["username"]
-
-    profile = mongo.db.users.find({"username":username})
-
-    for user in profile:
-        user_type = user.get("user_type")
-
-        session["user_type"] = user_type
-
-
-    if session["user"] and session["user_type"]:
-        return render_template("profile.html", username=username,
-        user_type=user_type)
-
-    return redirect(url_for("login"))
-
-
 @app.route("/logout")
 def logout():
     # remove user from session cookie
@@ -113,12 +104,15 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/edit-profile", methods=["GET", "POST"])
-def edit_profile():
+# PROFILE CODE
+@app.route("/create-profile", methods=["GET", "POST"])
+def create_profile():
     if request.method == "POST":
 
         username = session["user"]
         print(username)
+        usertype = session["user_type"]
+        print(usertype)
 
         edit_profile = {
             "name": request.form.get("name").lower(),
@@ -129,15 +123,87 @@ def edit_profile():
             "gender": request.form.get("gender").lower(),
             "position": request.form.get("position"),
             "user": session["user"],
-
+            "user_type": session["user_type"]
         }
 
         mongo.db.profiles.insert(edit_profile)
+        flash("create Successful!")
+        return redirect(url_for("read_profile", profilename=edit_profile["name"], username=username))
 
+    return render_template("create-profile.html")
+
+
+@app.route("/read-profile/<profilename>/<username>", methods=["GET"])
+def read_profile(profilename, username):
+    query = { "name": profilename, "user": username }
+    print("query")
+    print(query)
+    check_profile = mongo.db.profiles.find(query)
+    print("aaaaa")
+    for x in check_profile:
+        profile = {
+            "name": x["name"],
+            "profile_pic": x["profile_pic"],
+            "DOB": x["DOB"],
+            "current_team": x["current_team"],
+            "bio": x["bio"],
+            "gender": x["gender"],
+            "position": x["position"],
+            "user": username,
+            "user_type": x["user_type"]
+        }
+    print("bbbb")
+    print(profile)
+
+    return render_template('profile.html', profile = profile)
+
+
+
+@app.route("/edit-profile", methods=["GET", "POST"])
+def edit_profile():
+    if request.method == "POST":
+
+        username = session["user"]
+        print(username)
+
+        profile = mongo.db.profiles.find({"username": username})
+
+        add_profile = {
+            "name": request.form.get("name").lower(),
+            "profile_pic": request.form.get("profile_pic"),
+            "DOB": request.form.get("DOB").lower(),
+            "current_team": request.form.get("current_team").lower(),
+            "bio": request.form.get("bio").lower(),
+            "gender": request.form.get("gender").lower(),
+            "position": request.form.get("position"),
+            "user": session["user"],
+        }
+
+        print(profile)
+        
+        mongo.db.profiles.update(profile, add_profile)
         flash("edit Successful!")
         return redirect(url_for("profile", username=session["user"], user_type=session["user_type"]))
 
     return render_template("edit-profile.html")
+
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+
+    username = session["user"]
+    user_type = session["user_type"]
+
+    profile = mongo.db.profiles.find({"user": username})
+
+    print(profile)
+
+    if session["user"] and session["user_type"]:
+        return render_template("profile.html", username=username,
+        user_type=user_type)
+
+    return redirect(url_for("login"))
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
