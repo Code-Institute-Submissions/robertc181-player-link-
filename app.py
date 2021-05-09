@@ -127,13 +127,13 @@ def create_profile():
 
         mongo.db.profiles.insert(edit_profile)
         flash("create Successful!")
-        return redirect(url_for("read_profile", profilename=edit_profile["name"], username=username))
+        return redirect(url_for("read_profile", username=username))
 
     return render_template("create-profile.html")
 
 
-@app.route("/read-profile/<profilename>/<username>", methods=["GET"])
-def read_profile(profilename, username):
+@app.route("/read-profile/<username>", methods=["GET"])
+def read_profile(username):
     
     query = { "user": username }
 
@@ -152,7 +152,22 @@ def read_profile(profilename, username):
             "user_type": x["user_type"]
         }
 
-    return render_template('profile.html', profile = profile)
+    ev_query = { "player": username }
+
+    check_events = mongo.db.events.find(ev_query)
+    events = []
+
+    for x in check_events:
+        event = {
+            "name": x["name"],
+            "time": x["time"],
+            "place": x["place"],
+            "player": x["player"]
+        }
+        events.append(event)
+
+
+    return render_template('profile.html', profile = profile, events = events)
 
 
 
@@ -216,8 +231,31 @@ def update_profile():
 
         mongo.db.profiles.save(update_profile)
         flash("update Successful!")
-        return redirect(url_for("read_profile", profilename=update_profile["name"], username=username))
+        return redirect(url_for("read_profile", username=username))
 
+
+# EVENTS CODE
+
+@app.route("/create-event", methods=["GET", "POST"])
+def create_event():
+    if request.method == "POST":
+
+        username = session["user"]
+
+        edit_event = {
+            "name": request.form.get("eventname").lower(),
+            "time": request.form.get("eventtime"),
+            "place": request.form.get("eventlocation").lower(),
+            "player": username
+        }
+
+        mongo.db.events.insert(edit_event)
+        flash("create Event Successful!")
+        return redirect(url_for("read_profile", username=username))
+
+    return render_template("create-event.html")
+
+    
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
