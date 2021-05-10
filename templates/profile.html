@@ -21,6 +21,7 @@
                         <th scope="col">Time</th>
                         <th scope="col">Location</th>
                         <th scope="col">Player</th>
+                        <th scope="col"></th>
                 </tr>
         </thead>
         <tbody>
@@ -30,6 +31,12 @@
                         <td>{{ event["time"] }}</td>
                         <td>{{ event["place"] }}</td>
                         <td>{{ event["player"] }}</td>
+                        <td>
+                            <button><a href="">Edit</a></button>
+                            <button><a href="{{ url_for('delete_event', event=event)  }}">Delete</a></button>
+
+                        </td>
+                        
                 </tr>
                 {% endfor %}
         </tbody>
