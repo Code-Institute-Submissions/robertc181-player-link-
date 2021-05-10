@@ -1,4 +1,5 @@
 import os
+import json
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -254,6 +255,17 @@ def create_event():
         return redirect(url_for("read_profile", username=username))
 
     return render_template("create-event.html")
+
+
+@app.route("/delete-event/<event>")
+def delete_event(event):
+    username = session["user"]
+
+    json_event = json.loads(event.replace("'", '"'))
+
+    mongo.db.events.remove(json_event)
+    flash("delete Event Successful!")
+    return redirect(url_for("read_profile", username=username))
 
     
 
