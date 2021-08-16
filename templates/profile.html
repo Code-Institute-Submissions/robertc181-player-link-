@@ -32,7 +32,7 @@
                         <td>{{ event["place"] }}</td>
                         <td>{{ event["player"] }}</td>
                         <td>
-                            <button><a href="">Edit</a></button>
+                            <button><a href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a></button>
                             <button><a href="{{ url_for('delete_event', event=event)  }}">Delete</a></button>
 
                         </td>

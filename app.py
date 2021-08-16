@@ -160,6 +160,7 @@ def read_profile(username):
 
     for x in check_events:
         event = {
+            "_id": x["_id"],
             "name": x["name"],
             "time": x["time"],
             "place": x["place"],
@@ -259,6 +260,8 @@ def create_event():
 
 @app.route("/delete-event/<event>")
 def delete_event(event):
+
+    print(event)
     username = session["user"]
 
     json_event = json.loads(event.replace("'", '"'))
@@ -268,51 +271,20 @@ def delete_event(event):
     return redirect(url_for("read_profile", username=username))
 
     
-@app.route("/edit-event/<event>")
-def edit_event(event):
+@app.route("/edit-event/<event_id>", methods=["GET", "POST"])
+def edit_event(event_id):
 
-    query = { "user": session["user"] }
+    ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
 
-    check_profile = mongo.db.profiles.find(query)
+    event = {
+        "event_id": ev["_id"],
+        "eventname": ev["name"],
+        "eventtime": ev["time"],
+        "eventlocation": ev["place"],
+        "player": ev["player"]
+    }
 
-    for x in check_profile:
-        profile = {
-            "name": x["eventname"],
-            "time": x["eventtime"],
-            "place": x["eventlocation"],
-            "player": username,
-        }
-
-    return render_template("edit-profile.html", profile = profile)
-
-    # username = session["user"]
-
-    # json_event = json.loads(event.replace("'", '"'))
-
-    # mongo.db.events.remove(json_event)
-    # flash("delete Event Successful!")
-    # return redirect(url_for("read_profile", username=username))
-
-# @app.route("/edit-event", methods=["GET", "POST"])
-# def edit_event():
-#     query = { "user": session["user"] }
-
-#     check_event = mongo.db.events.find(query)
-
-#     for x in check_profile:
-#         profile = {
-#             "name": x["name"],
-#             "profile_pic": x["profile_pic"],
-#             "DOB": x["DOB"],
-#             "current_team": x["current_team"],
-#             "bio": x["bio"],
-#             "gender": x["gender"],
-#             "position": x["position"],
-#             "user": x["user"],
-#             "user_type": x["user_type"]
-#         }
-
-#     return render_template("edit-profile.html", profile = profile)
+    return render_template("edit-event.html", event=event)
 
 
 if __name__ == "__main__":
