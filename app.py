@@ -79,7 +79,6 @@ def login():
             if check_password_hash(
                     check_user["password"], request.form.get("password")):
                         session["user"] = request.form.get("username").lower()
-                        print({"user_type"})
                         flash("Welcome, {}".format(
                             request.form.get("username")))
                         return redirect(url_for("read_profile", 
@@ -140,8 +139,6 @@ def read_profile(username):
 
     check_profile = mongo.db.profiles.find(query)
 
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-
     for x in check_profile:
         profile = {
             "name": x["name"],
@@ -193,7 +190,7 @@ def edit_profile():
             "user_type": x["user_type"]
         }
 
-    return render_template("edit-profile.html", profile = profile)
+    return render_template("edit-profile.html", profile=profile)
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -201,10 +198,6 @@ def profile(username):
 
     username = session["user"]
     user_type = session["user_type"]
-
-    profile = mongo.db.profiles.find({"user": username})
-
-    print(profile)
 
     if session["user"] and session["user_type"]:
         return render_template("profile.html", username=username,
@@ -262,15 +255,12 @@ def create_event():
 @app.route("/delete-event/<event_id>")
 def delete_event(event_id):
 
-    print(event_id)
     username = session["user"]
 
     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
 
-    # json_event = json.loads(event.replace("'", '"'))
-
     mongo.db.events.remove(ev)
-    print("delete Event Successful!")
+    flash("delete Event Successful!")
     return redirect(url_for("read_profile", username=username))
 
     
@@ -293,48 +283,21 @@ def edit_event(event_id):
 @app.route("/update-event/<event_id>", methods=["POST"])
 def update_event(event_id):
 
-    print(event_id)
     if request.method == "POST":
 
         username = session["user"]
 
         update_event = {
-            "event_id": event_id,
+            "_id": ObjectId(event_id),
             "name": request.form.get("eventname"),
             "time": request.form.get("eventtime"),
             "location": request.form.get("eventlocation"),
             "player": session["user"],
         }
-        print(update_event)
-        # return render_template("edit-event.html", event=event)
 
         mongo.db.events.save(update_event)
-        print("update Successful!")
+        flash("update Successful!")
         return redirect(url_for("read_profile", username=username))
-
-# @app.route("/update-profile", methods=["GET", "POST"])
-# def update_profile():
-#     if request.method == "POST":
-
-#         username = session["user"]
-
-#         usertype = session["user_type"]
-
-#         update_profile = {
-#             "name": request.form.get("name").lower(),
-#             "profile_pic": request.form.get("profile_pic"),
-#             "DOB": request.form.get("DOB").lower(),
-#             "current_team": request.form.get("current_team").lower(),
-#             "bio": request.form.get("bio").lower(),
-#             "gender": request.form.get("gender").lower(),
-#             "position": request.form.get("position"),
-#             "user": session["user"],
-#             "user_type": session["user_type"]
-#         }
-
-#         mongo.db.profiles.save(update_profile)
-#         flash("update Successful!")
-#         return redirect(url_for("read_profile", username=username))
 
 
 if __name__ == "__main__":
