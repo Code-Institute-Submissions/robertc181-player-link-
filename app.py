@@ -54,13 +54,18 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/registered/<username>", methods=["GET", "POST"])
-def registered(username):
+@app.route("/registered/<username>/<user_type>", methods=["GET", "POST"])
+def registered(username, user_type):
     username = session["user"]
     user_type = session["user_type"]
 
+    print(user_type)
+
     if session["user"]:
-        return render_template("create-profile.html", username=username)
+        if user_type == "player":
+            return render_template("create-profile.html", username=username)
+        else:
+            return render_template("create-scout-profile.html", username=username, user_type=user_type)
 
     return redirect(url_for("login"))
 
@@ -79,7 +84,7 @@ def login():
             if check_password_hash(
                     check_user["password"], request.form.get("password")):
                         session["user"] = request.form.get("username").lower()
-                        flash("Welcome, {}".format(
+                        flash("Welcome, {session[username]}".format(
                             request.form.get("username")))
                         return redirect(url_for("read_profile", 
                             profilename=session["user"], username=session["user"]))
