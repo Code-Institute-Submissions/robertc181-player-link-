@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Edit Event</h2>
-    <form class="col-md-6 offset-md-3" method="POST" action="">
+    <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('update_event', event_id=event.event_id)}}">
         <!-- profile pic -->
         <div class="mb-3 col-md-6">
             <label for="eventname" class="form-label">Event Name</label>
-            <input type="text" id="eventname" name="eventname" value="{{ event.eventname }}" class="form-control" minlength="3" maxlength="30">
+            <input type="text" id="eventname" name="eventname" value="{{ event.name }}" class="form-control" minlength="3" maxlength="30">
         </div>
         <!-- name -->
         <div class="mb-3 col-md-6">
             <label for="eventtime" class="form-label">Event Time</label>
-            <input type="text" id="eventtime" name="eventtime" value="{{ event.eventtime }}" class="form-control" minlength="3" maxlength="30" pattern="^[a-zA-Z0-9]{3,30}$" >
+            <input type="text" id="eventtime" name="eventtime" value="{{ event.time }}" class="form-control" minlength="3" maxlength="30" pattern="^[a-zA-Z0-9]{3,30}$" >
         </div>
         <!-- date of birth -->
         <div class="mb-3 col-md-6">
             <label for="eventlocation" class="form-label">Event Location</label>
-            <input type="text" id="eventlocation" name="eventlocation" value="{{ event.eventlocation }}" class="form-control" minlength="3" maxlength="30" pattern="^[a-zA-Z0-9]{3,30}$" >
+            <input type="text" id="eventlocation" name="eventlocation" value="{{ event.location }}" class="form-control" minlength="3" maxlength="30" pattern="^[a-zA-Z0-9]{3,30}$" >
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
