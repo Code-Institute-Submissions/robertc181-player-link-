@@ -76,18 +76,17 @@ def registered(username, user_type):
 def login():
     if request.method == "POST":
         # check if username exists in db
-        check_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()})
+        check_user = mongo.db.users.find_one({"username": request.form.get("username").lower()})
+        print("ggggggggggggggggggg")
+        print(check_user["user_type"])
         
         if check_user:
             # ensure hashed password matches user input
-            if check_password_hash(
-                    check_user["password"], request.form.get("password")):
-                        session["user"] = request.form.get("username").lower()
-                        flash("Welcome, {session[username]}".format(
-                            request.form.get("username")))
-                        return redirect(url_for("read_profile", 
-                            profilename=session["user"], username=session["user"]))
+            if check_password_hash(check_user["password"], request.form.get("password")):
+                        session["user"] = request.form.get("username").lower() 
+                        session["user_type"] = check_user["user_type"]
+                        flash("Welcome, {}".format(request.form.get("username")))
+                        return redirect(url_for("read_profile", profilename=session["user"], username=session["user"], user_type=session["user_type"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -116,63 +115,94 @@ def create_profile():
 
         username = session["user"]
 
-        usertype = session["user_type"]
+        user_type = session["user_type"]
+        
+        if user_type == "player":
 
-        edit_profile = {
-            "name": request.form.get("name").lower(),
-            "profile_pic": request.form.get("profile_pic"),
-            "DOB": request.form.get("DOB").lower(),
-            "current_team": request.form.get("current_team").lower(),
-            "bio": request.form.get("bio").lower(),
-            "gender": request.form.get("gender").lower(),
-            "position": request.form.get("position"),
-            "user": session["user"],
-            "user_type": session["user_type"]
-        }
+            edit_profile = {
+                "name": request.form.get("name").lower(),
+                "profile_pic": request.form.get("profile_pic"),
+                "DOB": request.form.get("DOB").lower(),
+                "current_team": request.form.get("current_team").lower(),
+                "bio": request.form.get("bio").lower(),
+                "gender": request.form.get("gender").lower(),
+                "position": request.form.get("position"),
+                "user": session["user"],
+                "user_type": session["user_type"]
+            }
+        
+        else:
+
+            edit_profile = {
+                "name": request.form.get("name").lower(),
+                "profile_pic": request.form.get("profile_pic"),
+                "bio": request.form.get("bio").lower(),
+                "gender": request.form.get("gender").lower(),
+                "cert": request.form.get("cert"),
+                "user": session["user"],
+                "user_type": session["user_type"]
+            }
 
         mongo.db.profiles.insert(edit_profile)
-        flash("create Successful!")
-        return redirect(url_for("read_profile", username=username))
+        print("create Successful!")
+        print(user_type)
+        return redirect(url_for("read_profile", username=username, user_type=user_type))
 
     return render_template("create-profile.html")
 
 
-@app.route("/read-profile/<username>", methods=["GET"])
-def read_profile(username):
+@app.route("/read-profile/<username>/<user_type>", methods=["GET"])
+def read_profile(username, user_type):
     
     query = { "user": username }
 
     check_profile = mongo.db.profiles.find(query)
+    print("dddddddddddddddddddddddddddddd")
+    print(user_type)
 
-    for x in check_profile:
-        profile = {
-            "name": x["name"],
-            "profile_pic": x["profile_pic"],
-            "DOB": x["DOB"],
-            "current_team": x["current_team"],
-            "bio": x["bio"],
-            "gender": x["gender"],
-            "position": x["position"],
-            "user": username,
-            "user_type": x["user_type"]
-        }
+    if user_type == "player":
+        for x in check_profile:
+            profile = {
+                "name": x["name"],
+                "profile_pic": x["profile_pic"],
+                "DOB": x["DOB"],
+                "current_team": x["current_team"],
+                "bio": x["bio"],
+                "gender": x["gender"],
+                "position": x["position"],
+                "user": username,
+                "user_type": x["user_type"]
+            }
 
-    ev_query = { "player": username }
+        ev_query = { "player": username }
 
-    check_events = mongo.db.events.find(ev_query)
-    events = []
+        check_events = mongo.db.events.find(ev_query)
+        events = []
 
-    for x in check_events:
-        event = {
-            "_id": x["_id"],
-            "name": x["name"],
-            "time": x["time"],
-            "location": x["location"],
-            "player": x["player"]
-        }
-        events.append(event)
+        for x in check_events:
+            event = {
+                "_id": x["_id"],
+                "name": x["name"],
+                "time": x["time"],
+                "location": x["location"],
+                "player": x["player"]
+            }
+            events.append(event)
 
-    return render_template('profile.html', profile= profile, events = events)
+    else:
+        events = []
+        for x in check_profile:
+            profile = {
+                "name": x["name"],
+                "profile_pic": x["profile_pic"],
+                "bio": x["bio"],
+                "gender": x["gender"],
+                "cert": x["cert"],
+                "user": username,
+                "user_type": x["user_type"]
+            }
+
+    return render_template('profile.html', profile=profile, events=events)
 
 
 
@@ -182,20 +212,35 @@ def edit_profile():
 
     check_profile = mongo.db.profiles.find(query)
 
-    for x in check_profile:
-        profile = {
-            "name": x["name"],
-            "profile_pic": x["profile_pic"],
-            "DOB": x["DOB"],
-            "current_team": x["current_team"],
-            "bio": x["bio"],
-            "gender": x["gender"],
-            "position": x["position"],
-            "user": x["user"],
-            "user_type": x["user_type"]
-        }
+        
+    if session["user_type"] == "player":
+        for x in check_profile:
+            profile = {
+                "name": x["name"],
+                "profile_pic": x["profile_pic"],
+                "DOB": x["DOB"],
+                "current_team": x["current_team"],
+                "bio": x["bio"],
+                "gender": x["gender"],
+                "position": x["position"],
+                "user": x["user"],
+                "user_type": x["user_type"]
+            }
+    else:
+        for x in check_profile:
+            profile = {
+                "name": x["name"],
+                "profile_pic": x["profile_pic"],
+                "cert": x["cert"],
+                "bio": x["bio"],
+                "gender": x["gender"],
+                "user": x["user"],
+                "user_type": x["user_type"]
+            }
+        
+        return render_template("edit-profile.html", profile=profile )
 
-    return render_template("edit-profile.html", profile=profile)
+    return render_template("edit-profile.html", profile=profile )
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -216,23 +261,36 @@ def update_profile():
 
         username = session["user"]
 
-        usertype = session["user_type"]
+        user_type = session["user_type"]
 
-        update_profile = {
-            "name": request.form.get("name").lower(),
-            "profile_pic": request.form.get("profile_pic"),
-            "DOB": request.form.get("DOB").lower(),
-            "current_team": request.form.get("current_team").lower(),
-            "bio": request.form.get("bio").lower(),
-            "gender": request.form.get("gender").lower(),
-            "position": request.form.get("position"),
-            "user": session["user"],
-            "user_type": session["user_type"]
-        }
+        if session["user_type"] == "player":
+            update_profile = {
+                "name": request.form.get("name").lower(),
+                "profile_pic": request.form.get("profile_pic"),
+                "DOB": request.form.get("DOB").lower(),
+                "current_team": request.form.get("current_team").lower(),
+                "bio": request.form.get("bio").lower(),
+                "gender": request.form.get("gender").lower(),
+                "position": request.form.get("position"),
+                "user": session["user"],
+                "user_type": session["user_type"]
+            }
+
+        else:
+            update_profile = {
+                "name": request.form.get("name").lower(),
+                "profile_pic": request.form.get("profile_pic"),
+                "cert": request.form.get("cert").lower(),
+                "bio": request.form.get("bio").lower(),
+                "gender": request.form.get("gender").lower(),
+                "user": session["user"],
+                "user_type": session["user_type"]
+
+            }
 
         mongo.db.profiles.save(update_profile)
         flash("update Successful!")
-        return redirect(url_for("read_profile", username=username))
+        return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
 
 
 # EVENTS CODE
@@ -252,7 +310,7 @@ def create_event():
 
         mongo.db.events.insert(event)
         flash("create Event Successful!")
-        return redirect(url_for("read_profile", username=username))
+        return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
 
     return render_template("create-event.html")
 
@@ -266,7 +324,7 @@ def delete_event(event_id):
 
     mongo.db.events.remove(ev)
     flash("delete Event Successful!")
-    return redirect(url_for("read_profile", username=username))
+    return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
     
 @app.route("/edit-event/<event_id>", methods=["GET"])
@@ -302,7 +360,7 @@ def update_event(event_id):
 
         mongo.db.events.save(update_event)
         flash("update Successful!")
-        return redirect(url_for("read_profile", username=username))
+        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
 
 if __name__ == "__main__":
