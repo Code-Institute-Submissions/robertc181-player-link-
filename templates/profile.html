@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Profile</h2>
+{% if profile.user_type == "player" %}
+<h2>Player Profile</h2>
+
 <button><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
 
-
-{{ profile.name }}<br>
-{{ profile.DOB }}<br>
-{{ profile.current_team }}<br>
-{{ profile.gender }}<br>
-{{ profile.user_type }}<br>
-
+        {{ profile.name }}<br>
+        {{ profile.DOB }}<br>
+        {{ profile.current_team }}<br>
+        {{ profile.gender }}<br>
+        {{ profile.user_type }}<br>
 
 <h2>Events</h2>
+
 <button><a href="{{ url_for('create_event') }}">Create Event</a></button>
 
 <table class="table">
@@ -42,6 +43,19 @@
         </tbody>
 </table>
 
+{% else %}
+<h2>Scout Profile</h2>
+
+        <button><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+
+        {{ profile.name }}<br>
+        {{ profile.cert }}<br>
+        {{ profile.gender }}<br>
+        {{ profile.user_type }}<br>
+
+        <h2>Events</h2>
+
+{% endif %}
 
 <button><a href="{{ url_for('logout') }}">logout</a></button>
 
