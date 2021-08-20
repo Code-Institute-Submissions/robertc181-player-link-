@@ -62,10 +62,7 @@ def registered(username, user_type):
     print(user_type)
 
     if session["user"]:
-        if user_type == "player":
-            return render_template("create-profile.html", username=username)
-        else:
-            return render_template("create-scout-profile.html", username=username, user_type=user_type)
+        return render_template("create-profile.html", username=username, user_type=user_type)
 
     return redirect(url_for("login"))
 
