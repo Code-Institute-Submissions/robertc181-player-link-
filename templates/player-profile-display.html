@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ profile.user }}'s Profile</h2>
+
+        {{ profile.user }}<br>     
+        {{ profile.name }}<br>
+        {{ profile.DOB }}<br>
+        {{ profile.current_team }}<br>
+        {{ profile.gender }}<br>
+        {{ profile.user_type }}<br>
+
+
+<h2>Events</h2>
+
+<table class="table">
+        <thead>
+                <tr>
+                        <th scope="col">Event Name</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Player</th>
+                        <th scope="col"></th>
+                </tr>
+        </thead>
+        <tbody>
+                {% for event in events %}
+                <tr>
+                        <td>{{ event["name"] }}</td>
+                        <td>{{ event["time"] }}</td>
+                        <td>{{ event["location"] }}</td>
+                        <td>{{ event["player"] }}</td>
+                        
+                </tr>
+                {% endfor %}
+        </tbody>
+</table>
+
+
+
+{% endblock %}

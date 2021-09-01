@@ -64,7 +64,7 @@
         </form>
         <tr>
         {% for user in users %}
-            <td><button>{{ user.username }}</button></td><br>   
+            <td><button><a href="{{ url_for('player_profile', username=user.username)}}">{{ user.username }}</a></button></td><br>   
         {% endfor %}
         </tr>
 
