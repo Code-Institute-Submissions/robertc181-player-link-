@@ -362,24 +362,47 @@ def update_event(event_id):
         mongo.db.events.save(update_event)
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
-
-
-# Search code
-
-# @app.route("/search", methods=["GET", "POST"])
-# def search():
-
-#     # username = session["user"]
-
-#     if request.method == "POST":
-#         query = request.form.get("query")
-#         users = list(mongo.db.users.find({"username": {'$regex': query}, "user_type": "player"}))
-#     else:
-#         users = list(mongo.db.users.find({"user_type": "player"}))
-#     print("user", users)
-#     return render_template(".html", users=users)
-#     # return redirect(url_for("read_profile", username=session["user"], user_type=session["user_type"], users=users))
         
+@app.route("/player-profile/<username>", methods=["GET", "POST"])
+def player_profile(username):
+    
+    query = { "user": username }
+    print("user", username)
+    check_profile = mongo.db.profiles.find(query)
+    
+
+    for x in check_profile:
+        profile = {
+            "name": x["name"],
+            "profile_pic": x["profile_pic"],
+            "DOB": x["DOB"],
+            "current_team": x["current_team"],
+            "bio": x["bio"],
+            "gender": x["gender"],
+            "position": x["position"],
+            "user": username,
+            "user_type": x["user_type"]
+        }
+
+        ev_query = { "player": username }
+
+    check_events = mongo.db.events.find(ev_query)
+    events = []
+
+    for x in check_events:
+        event = {
+            "_id": x["_id"],
+            "name": x["name"],
+            "time": x["time"],
+            "location": x["location"],
+            "player": x["player"]
+        }
+        events.append(event) 
+            
+    print("this is the profile", profile)
+    print("this is the event", events)
+    return render_template('player-profile-display.html', profile=profile, events=events)
+
 
 
 if __name__ == "__main__":
