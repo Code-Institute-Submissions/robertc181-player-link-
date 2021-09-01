@@ -4,6 +4,7 @@ from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
+# from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
@@ -19,6 +20,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+# mongo_client = MongoClient('mongodb://localhost:27017')
 
 @app.route("/")
 @app.route("/index")
@@ -59,8 +61,6 @@ def registered(username, user_type):
     username = session["user"]
     user_type = session["user_type"]
 
-    print(user_type)
-
     if session["user"]:
         return render_template("create-profile.html", username=username, user_type=user_type)
 
@@ -74,8 +74,7 @@ def login():
     if request.method == "POST":
         # check if username exists in db
         check_user = mongo.db.users.find_one({"username": request.form.get("username").lower()})
-        print("ggggggggggggggggggg")
-        print(check_user["user_type"])
+
         
         if check_user:
             # ensure hashed password matches user input
@@ -141,20 +140,18 @@ def create_profile():
             }
 
         mongo.db.profiles.insert(edit_profile)
-        print("create Successful!")
-        print(user_type)
+        flash("create Successful!")
         return redirect(url_for("read_profile", username=username, user_type=user_type))
 
     return render_template("create-profile.html")
 
 
-@app.route("/read-profile/<username>/<user_type>", methods=["GET"])
+@app.route("/read-profile/<username>/<user_type>", methods=["GET", "POST"])
 def read_profile(username, user_type):
     
     query = { "user": username }
 
     check_profile = mongo.db.profiles.find(query)
-    print("dddddddddddddddddddddddddddddd")
     print(user_type)
 
     if user_type == "player":
@@ -199,7 +196,14 @@ def read_profile(username, user_type):
                 "user_type": x["user_type"]
             }
 
-    return render_template('profile.html', profile=profile, events=events)
+    if request.method == "POST":
+        query = request.form.get("query")
+        users = list(mongo.db.users.find({"username": {'$regex': query}, "user_type": "player"}))
+    else:
+        users = []
+            
+    print(profile)
+    return render_template('profile.html', profile=profile, events=events, users=users)
 
 
 
@@ -358,6 +362,24 @@ def update_event(event_id):
         mongo.db.events.save(update_event)
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+
+
+# Search code
+
+# @app.route("/search", methods=["GET", "POST"])
+# def search():
+
+#     # username = session["user"]
+
+#     if request.method == "POST":
+#         query = request.form.get("query")
+#         users = list(mongo.db.users.find({"username": {'$regex': query}, "user_type": "player"}))
+#     else:
+#         users = list(mongo.db.users.find({"user_type": "player"}))
+#     print("user", users)
+#     return render_template(".html", users=users)
+#     # return redirect(url_for("read_profile", username=session["user"], user_type=session["user_type"], users=users))
+        
 
 
 if __name__ == "__main__":

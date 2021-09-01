@@ -5,6 +5,7 @@
 
 <button><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
 
+        {{ profile.username }}<br>     
         {{ profile.name }}<br>
         {{ profile.DOB }}<br>
         {{ profile.current_team }}<br>
@@ -46,14 +47,26 @@
 {% else %}
 <h2>Scout Profile</h2>
 
-        <button><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+        <button><a href="{{ url_for('edit_profile')}}">edit Profile</a></button>
 
+        {{ profile.user }}<br>      
         {{ profile.name }}<br>
         {{ profile.cert }}<br>
         {{ profile.gender }}<br>
         {{ profile.user_type }}<br>
 
-        <h2>Events</h2>
+        <h2>Search</h2>
+
+        <form action="{{ url_for('read_profile', username=profile.user, user_type=profile.user_type)  }}" method="POST">
+                <input type="text" name="query" id="query" >
+                <label for="query">Search for players</label>
+                <button>Search</button>
+        </form>
+        <tr>
+        {% for user in users %}
+            <td><button>{{ user.username }}</button></td><br>   
+        {% endfor %}
+        </tr>
 
 {% endif %}
 
