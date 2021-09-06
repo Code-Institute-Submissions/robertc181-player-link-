@@ -4,9 +4,13 @@
     <h2>Create Profile</h2>
         <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
             <!-- profile pic -->
-            <div class="mb-3 col-md-6">
+            <!-- <div class="mb-3 col-md-6">
                 <label for="username" class="form-label">Profile-pic</label>
                 <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15">
+            </div> -->
+            <div class="mb-3 col-md-6">
+                <label for="profile_pic" class="form-label">Profile pic</label>
+                <input type="file" id="profile_pic" name="profile_pic" class="form-control">
             </div>
             <!-- name -->
             <div class="mb-3 col-md-6">
@@ -16,7 +20,7 @@
             <!-- date of birth -->
             <div class="mb-3 col-md-6">
                 <label for="DOB" class="form-label">Date Of Birth</label>
-                <input type="text" id="DOB" name="DOB" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$" >
+                <input type="date" id="DOB" name="DOB" class="form-control" required>
             </div>
             <!-- gender -->
             <div class="mb-3 col-md-6">
