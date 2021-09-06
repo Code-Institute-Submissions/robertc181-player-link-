@@ -1,5 +1,6 @@
 import os
 import json
+import datetime 
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -7,12 +8,13 @@ from flask_pymongo import PyMongo
 # from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 if os.path.exists("env.py"):
     import env
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
-
 
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
@@ -115,10 +117,20 @@ def create_profile():
         
         if user_type == "player":
 
+            # reversed_date = request.form.get("DOB").lower(),
+            # print("this is ", reversed_date)
+            # datetimeobject = datetime.strptime(reversed_date,'%Y%m%d')
+            # new_format = datetimeobject.strftime('%m-%d-%Y')
+            # print("hello ", new_format)
+
+            dtstr = request.form.get("DOB")
+            dt = datetime.datetime.strptime(dtstr, '%Y-%m-%d')
+            date = dt.strftime("%d") , dt.strftime("%m") , dt.strftime("%Y")
+
             edit_profile = {
                 "name": request.form.get("name").lower(),
                 "profile_pic": request.form.get("profile_pic"),
-                "DOB": request.form.get("DOB").lower(),
+                "DOB": date,
                 "current_team": request.form.get("current_team").lower(),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
@@ -126,6 +138,8 @@ def create_profile():
                 "user": session["user"],
                 "user_type": session["user_type"]
             }
+
+            # print("DOB", edit_profile["DOB"] )
         
         else:
 
@@ -398,10 +412,17 @@ def player_profile(username):
             "player": x["player"]
         }
         events.append(event) 
+
+    
+
+
+
+    
             
     print("this is the profile", profile)
     print("this is the event", events)
     return render_template('player-profile-display.html', profile=profile, events=events)
+
 
 
 
