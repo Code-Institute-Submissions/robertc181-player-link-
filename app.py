@@ -8,11 +8,11 @@ from flask_pymongo import PyMongo
 # from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
+
+
 if os.path.exists("env.py"):
     import env
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 
@@ -116,12 +116,7 @@ def create_profile():
         user_type = session["user_type"]
         
         if user_type == "player":
-
-            # reversed_date = request.form.get("DOB").lower(),
-            # print("this is ", reversed_date)
-            # datetimeobject = datetime.strptime(reversed_date,'%Y%m%d')
-            # new_format = datetimeobject.strftime('%m-%d-%Y')
-            # print("hello ", new_format)
+ 
 
             dtstr = request.form.get("DOB")
             dt = datetime.datetime.strptime(dtstr, '%Y-%m-%d')
@@ -129,7 +124,6 @@ def create_profile():
 
             edit_profile = {
                 "name": request.form.get("name").lower(),
-                "profile_pic": request.form.get("profile_pic"),
                 "DOB": date,
                 "current_team": request.form.get("current_team").lower(),
                 "bio": request.form.get("bio").lower(),
@@ -139,13 +133,11 @@ def create_profile():
                 "user_type": session["user_type"]
             }
 
-            # print("DOB", edit_profile["DOB"] )
         
         else:
 
             edit_profile = {
                 "name": request.form.get("name").lower(),
-                "profile_pic": request.form.get("profile_pic"),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
                 "cert": request.form.get("cert"),
@@ -172,7 +164,6 @@ def read_profile(username, user_type):
         for x in check_profile:
             profile = {
                 "name": x["name"],
-                "profile_pic": x["profile_pic"],
                 "DOB": x["DOB"],
                 "current_team": x["current_team"],
                 "bio": x["bio"],
@@ -202,7 +193,6 @@ def read_profile(username, user_type):
         for x in check_profile:
             profile = {
                 "name": x["name"],
-                "profile_pic": x["profile_pic"],
                 "bio": x["bio"],
                 "gender": x["gender"],
                 "cert": x["cert"],
@@ -229,11 +219,16 @@ def edit_profile():
 
         
     if session["user_type"] == "player":
+
         for x in check_profile:
+
+            # dtstr = x["name"]
+            # dt = datetime.datetime.strptime(dtstr, '%Y-%m-%d')
+            # date = dt.strftime("%d") , dt.strftime("%m") , dt.strftime("%Y")
+
             profile = {
                 "name": x["name"],
-                "profile_pic": x["profile_pic"],
-                "DOB": x["DOB"],
+                "DOB": x["name"],
                 "current_team": x["current_team"],
                 "bio": x["bio"],
                 "gender": x["gender"],
@@ -245,7 +240,6 @@ def edit_profile():
         for x in check_profile:
             profile = {
                 "name": x["name"],
-                "profile_pic": x["profile_pic"],
                 "cert": x["cert"],
                 "bio": x["bio"],
                 "gender": x["gender"],
@@ -281,7 +275,6 @@ def update_profile():
         if session["user_type"] == "player":
             update_profile = {
                 "name": request.form.get("name").lower(),
-                "profile_pic": request.form.get("profile_pic"),
                 "DOB": request.form.get("DOB").lower(),
                 "current_team": request.form.get("current_team").lower(),
                 "bio": request.form.get("bio").lower(),
@@ -294,7 +287,6 @@ def update_profile():
         else:
             update_profile = {
                 "name": request.form.get("name").lower(),
-                "profile_pic": request.form.get("profile_pic"),
                 "cert": request.form.get("cert").lower(),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
@@ -388,7 +380,6 @@ def player_profile(username):
     for x in check_profile:
         profile = {
             "name": x["name"],
-            "profile_pic": x["profile_pic"],
             "DOB": x["DOB"],
             "current_team": x["current_team"],
             "bio": x["bio"],
@@ -399,6 +390,9 @@ def player_profile(username):
         }
 
         ev_query = { "player": username }
+
+
+    
 
     check_events = mongo.db.events.find(ev_query)
     events = []
@@ -414,16 +408,9 @@ def player_profile(username):
         events.append(event) 
 
     
-
-
-
-    
-            
     print("this is the profile", profile)
     print("this is the event", events)
     return render_template('player-profile-display.html', profile=profile, events=events)
-
-
 
 
 if __name__ == "__main__":
