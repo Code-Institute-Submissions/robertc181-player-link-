@@ -1,44 +1,79 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>{{ profile.user }}'s Profile</h2>
+<div class="container-fluid headingtop">        
+        <div class="row">
+                <div class="col">
+                        <h2 class="title">{{ profile.user }}'s Profile</h2>
+                </div>
+        </div>
+</div>
 
-        {{ profile.user }}<br>     
-        {{ profile.name }}<br>
-        {{ profile.DOB }}<br>
-        {{ profile.current_team }}<br>
-        {{ profile.gender }}<br>
-        {{ profile.user_type }}<br>
+        <div class="container-fluid profileentry">
+                <div class="row">
+                        <div class="col leftside">
+                                <p><span class="bold">Name : </span> {{ profile.name }}</p>
+                                <p><span class="bold">Date of birth :  </span> {{ profile.DOB }}</p>
+                                <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
+                                <p><span class="bold">Current Team : </span> {{ profile.current_team }}</p>
+                                <p><span class="bold">Position : </span> {{ profile.position }}</p>
+                                <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
+                                
+                        </div>
+                </div>
+        </div>
+<hr>
 
-        
+<div class="container-fluid headingtop">        
+        <div class="row">
+                <div class="col">
+                        <h2 class="title">Events</h2>
+                </div>
+        </div>
+</div>
 
-<h2>Events</h2>
 
-<table class="table">
-        <thead>
-                <tr>
-                        <th scope="col">Event Name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Player</th>
-                        <th scope="col"></th>
-                </tr>
-        </thead>
-        <tbody>
-                {% for event in events %}
-                <tr>
-                        <td>{{ event["name"] }}</td>
-                        <td>{{ event["time"] }}</td>
-                        <td>{{ event["location"] }}</td>
-                        <td>{{ event["player"] }}</td>
-                        <td>
-                            
-                        </td>
+<div class="container">
+        <div class="row">
+                <div class="col">
+                        <table class="table">
+                                <thead>
+                                        <tr>
+                                                <th scope="col">Event Name</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Location</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col">Scout</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {% if events == [] %}
+                                        <div class="col">
+                                                <p>{{ profile.user }} has no events yet</p>
+                                        </div>
+                                        {% else %}
+                                        {% for event in events %}
+                                        <tr>
+                                                <td>{{ event["name"] }}</td>
+                                                <td>{{ event["time"] }}</td>
+                                                <td>{{ event["location"] }}</td>
+                                                <td>{{ event["player"] }}</td>
+                                                {% if event["scout"] %}
+                                                        <td>{{ event["scout"] }}</td>
+                                                {% endif %}
+                                                <td>
+                                                        <button class="bluebtn buttonsm "><a href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a></button>
                         
-                </tr>
-                {% endfor %}
-        </tbody>
-</table>
+                                                </td>
+                                                
+                                        </tr>
+                                        {% endfor %}
+                                        {% endif %}
+                                </tbody>
+                        </table>
+                </div>
+        </div>
+</div>
 
 
 
