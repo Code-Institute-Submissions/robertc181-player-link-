@@ -64,3 +64,12 @@ a:hover{
 
 }
 
+.center{
+    text-align: center;
+}
+
+.flashcon{
+    background-color: #6200EE;
+    color: white;
+}
+
