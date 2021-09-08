@@ -1,74 +1,94 @@
 {% extends "base.html" %}
 {% block content %}
     {% if user_type == "player" %}
-    <h2>Create Profile</h2>
-        <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
-            <!-- name -->
-            <div class="mb-3 col-md-6">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
+    <div class="container-fluid headingtop">
+        <div class="row">
+            <div class="col">
+                <h2 class="title">Create Player Profile</h2>
             </div>
-            <!-- date of birth -->
-            <div class="mb-3 col-md-6">
-                <label for="DOB" class="form-label">Date Of Birth</label>
-                <input type="date" id="DOB" name="DOB" class="form-control" required>
-            </div>
-            <!-- gender -->
-            <div class="mb-3 col-md-6">
-                <label for="gender" class="form-label">Gender</label>
-                <input type="text" id="gender" name="gender" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$">
-            </div>
-            <!-- current team -->
-            <div class="mb-3 col-md-6">
-                <label for="current_team" class="form-label">Current Team</label>
-                <input type="text" id="current_team" name="current_team"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" class="form-control">
-            </div>
-            <!-- position -->
-            <div class="mb-3 col-md-6">
-                <select class="form-select" name="position" aria-label="Default select example ">
-                    <option value="" disabled selected>Position</option>
-                    <option value="player" >Goal Keeper</option>
-                    <option value="player" >Defender</option>
-                    <option value="player" >Midfielder</option>
-                    <option value="scout" >Forward</option>
-                </select>
-            </div>
-            <!-- bio -->
-            <div class="mb-3 col-md-6">
-                <label for="bio" class="form-label">Bio</label>
-                <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
-            </div>
-            <button type="submit" class="bluebtn button" >Submit</button>
-        </form>
+        </div>
+    </div>
+    <div class="container-fluid formcol">
+        <div class="row">
+            <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
+                <!-- name -->
+                <div class="mb-3 col-md-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
+                </div>
+                <!-- date of birth -->
+                <div class="mb-3 col-md-6">
+                    <label for="DOB" class="form-label">Date Of Birth</label>
+                    <input type="date" id="DOB" name="DOB" class="form-control" required>
+                </div>
+                <!-- gender -->
+                <div class="mb-3 col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <input type="text" id="gender" name="gender" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$">
+                </div>
+                <!-- current team -->
+                <div class="mb-3 col-md-6">
+                    <label for="current_team" class="form-label">Current Team</label>
+                    <input type="text" id="current_team" name="current_team"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" class="form-control">
+                </div>
+                <!-- position -->
+                <div class="mb-3 col-md-6">
+                    <select class="form-select" name="position" aria-label="Default select example ">
+                        <option value="" disabled selected>Position</option>
+                        <option value="player" >Goal Keeper</option>
+                        <option value="player" >Defender</option>
+                        <option value="player" >Midfielder</option>
+                        <option value="scout" >Forward</option>
+                    </select>
+                </div>
+                <!-- bio -->
+                <div class="mb-3 col-md-6">
+                    <label for="bio" class="form-label">Bio</label>
+                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
+                </div>
+                <button type="submit" class="bluebtn button" >Submit</button>
+            </form>
+        </div>
+    </div>
     {% else %}
-    <h2>Create Scout Profile</h2>
-        <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
-            <!-- profile pic -->
-            <div class="mb-3 col-md-6">
-                <label for="username" class="form-label">Profile-pic</label>
-                <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15">
+    <div class="container-fluid headingtop">
+        <div class="row">
+            <div class="col">
+                <h2 class="title">Create Scout Profile</h2>
             </div>
-            <!-- name -->
-            <div class="mb-3 col-md-6">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
-            </div>
-            <!-- gender -->
-            <div class="mb-3 col-md-6">
-                <label for="gender" class="form-label">Gender</label>
-                <input type="text" id="gender" name="gender" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$">
-            </div>
-            <!-- cert -->
-            <div class="mb-3 col-md-6">
-                <label for="cert" class="form-label">Certs</label>
-                <input type="text" id="cert" name="cert" class="form-control"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$">
-            </div>
-            <!-- bio -->
-            <div class="mb-3 col-md-6">
-                <label for="bio" class="form-label">Bio</label>
-                <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
-            </div>
-            <button type="submit" class="bluebtn button">Submit</button>
-        </form>
+        </div>
+    </div>
+    <div class="container-fluid formcol">
+        <div class="row">
+            <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
+                <!-- profile pic -->
+                <div class="mb-3 col-md-6">
+                    <label for="username" class="form-label">Profile-pic</label>
+                    <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15">
+                </div>
+                <!-- name -->
+                <div class="mb-3 col-md-6">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
+                </div>
+                <!-- gender -->
+                <div class="mb-3 col-md-6">
+                    <label for="gender" class="form-label">Gender</label>
+                    <input type="text" id="gender" name="gender" class="form-control" minlength="3" maxlength="25" pattern="^[a-zA-Z0-9]{3,25}$">
+                </div>
+                <!-- cert -->
+                <div class="mb-3 col-md-6">
+                    <label for="cert" class="form-label">Certs</label>
+                    <input type="text" id="cert" name="cert" class="form-control"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$">
+                </div>
+                <!-- bio -->
+                <div class="mb-3 col-md-6">
+                    <label for="bio" class="form-label">Bio</label>
+                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
+                </div>
+                <button type="submit" class="bluebtn button">Submit</button>
+            </form>
+        </div>
+    </div>
     {% endif %}
 {% endblock %}
