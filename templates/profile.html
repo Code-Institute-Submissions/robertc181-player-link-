@@ -77,28 +77,59 @@
 
 
 {% else %}
-<h2>Scout Profile</h2>
+<div class="container-fluid headingtop">        
+        <div class="row">
+                <div class="col">
+                        <h2 class="title">{{ profile.user }}'s Profile</h2>
+                </div>
+        </div>
+</div>
 
-        <button><a href="{{ url_for('edit_profile')}}">edit Profile</a></button>
+<div class="container-fluid profileentry">
+        <div class="row">
+                <div class="col leftside">
+                        <p><span class="bold">Name : </span> {{ profile.name }}</p>
+                        <p><span class="bold">Cert :  </span> {{ profile.cert }}</p>
+                        <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
+                        <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
 
-        {{ profile.user }}<br>      
-        {{ profile.name }}<br>
-        {{ profile.cert }}<br>
-        {{ profile.gender }}<br>
-        {{ profile.user_type }}<br>
+                        <div class="col">
+                                <button class="bluebtn button right"><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+                        </div>
+                        
+                </div>
+        </div>
+</div>
 
-        <h2>Search</h2>
+<hr>
 
-        <form action="{{ url_for('read_profile', username=profile.user, user_type=profile.user_type)  }}" method="POST">
-                <input type="text" name="query" id="query" >
-                <label for="query">Search for players</label>
-                <button>Search</button>
-        </form>
-        <tr>
-        {% for user in users %}
-            <td><button><a href="{{ url_for('player_profile', username=user.username)}}">{{ user.username }}</a></button></td><br>   
-        {% endfor %}
-        </tr>
+
+        <div class="container-fluid headingtop">        
+                <div class="row">
+                        <div class="col">
+                                <h2 class="title">Search</h2>
+                        </div>
+                </div>
+        </div>
+
+        <div class="container">
+                <div class="row">
+                        <div class="col center">
+                                <form action="{{ url_for('read_profile', username=profile.user, user_type=profile.user_type)  }}" method="POST">
+                                        <label for="query">Search for players</label>
+                                        <input type="text" name="query" id="query" >
+                                        <button class="bluebtn buttonsm">Search</button>
+                                </form>
+                                <div class="col top">
+                                        <tr>
+                                                {% for user in users %}
+                                                    <td><button class="bluebtn button"><a href="{{ url_for('player_profile', username=user.username)}}">{{ user.username }}</a></button></td><br>   
+                                                {% endfor %}
+                                        </tr> 
+                                </div>
+                        </div>
+                </div>
+        </div>
 
 {% endif %}
 
