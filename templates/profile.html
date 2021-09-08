@@ -1,48 +1,80 @@
 {% extends "base.html" %}
 {% block content %}
 {% if profile.user_type == "player" %}
-<h2>Player Profile</h2>
+        <div class="container-fluid headingtop">        
+                <div class="row">
+                        <div class="col">
+                                <h2 class="title">{{ profile.user }}'s Profile</h2>
+                        </div>
+                </div>
+        </div>
 
-<button><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+        <div class="container-fluid profileentry">
+                <div class="row">
+                        <div class="col leftside">
+                                <p><span class="bold">Name : </span> {{ profile.name }}</p>
+                                <p><span class="bold">Date of birth :  </span> {{ profile.DOB }}</p>
+                                <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
+                                <p><span class="bold">Current Team : </span> {{ profile.current_team }}</p>
+                                <p><span class="bold">Position : </span> {{ profile.position }}</p>
+                                <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
 
-        {{ profile.username }}<br>     
-        {{ profile.name }}<br>
-        {{ profile.DOB }}<br>
-        {{ profile.current_team }}<br>
-        {{ profile.gender }}<br>
-        {{ profile.user_type }}<br>
+                                <div class="col">
+                                        <button class="bluebtn button right"><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+                                </div>
+                                
+                        </div>
+                </div>
+        </div>
 
-<h2>Events</h2>
+<hr>
 
-<button><a href="{{ url_for('create_event') }}">Create Event</a></button>
 
-<table class="table">
-        <thead>
-                <tr>
-                        <th scope="col">Event Name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Player</th>
-                        <th scope="col"></th>
-                </tr>
-        </thead>
-        <tbody>
-                {% for event in events %}
-                <tr>
-                        <td>{{ event["name"] }}</td>
-                        <td>{{ event["time"] }}</td>
-                        <td>{{ event["location"] }}</td>
-                        <td>{{ event["player"] }}</td>
-                        <td>
-                            <button><a href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a></button>
-                            <button><a href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a></button>
+        <div class="container-fluid headingtop">        
+                <div class="row">
+                        <div class="col">
+                                <h2 class="title">Events</h2>
+                        </div>
+                </div>
+        </div>
 
-                        </td>
+<div class="container">
+        <div class="row">
+                <div class="col">
+                        <div class="col center bottom">
+                                <button class="bluebtn button "><a href="{{ url_for('create_event') }}">Create Event</a></button>
+                        </div>
+                        <table class="table">
+                                <thead>
+                                        <tr>
+                                                <th scope="col">Event Name</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Location</th>
+                                                <th scope="col">Player</th>
+                                                <th scope="col"></th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {% for event in events %}
+                                        <tr>
+                                                <td>{{ event["name"] }}</td>
+                                                <td>{{ event["time"] }}</td>
+                                                <td>{{ event["location"] }}</td>
+                                                <td>{{ event["player"] }}</td>
+                                                <td>
+                                                    <button class="bluebtn buttonsm "><a href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a></button>
+                                                    <button class="bluebtn buttonsm "><a href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a></button>
                         
-                </tr>
-                {% endfor %}
-        </tbody>
-</table>
+                                                </td>
+                                                
+                                        </tr>
+                                        {% endfor %}
+                                </tbody>
+                        </table>
+                </div>
+        </div>
+</div>
+
 
 {% else %}
 <h2>Scout Profile</h2>
@@ -70,6 +102,6 @@
 
 {% endif %}
 
-<button><a href="{{ url_for('logout') }}">logout</a></button>
+
 
 {% endblock %}
