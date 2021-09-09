@@ -1,6 +1,5 @@
 import os
-import json
-import datetime 
+import datetime
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -22,13 +21,12 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
-# mongo_client = MongoClient('mongodb://localhost:27017')
-
 @app.route("/")
 @app.route("/index")
 def index():
     users = mongo.db.users.find()
     return render_template("index.html", users=users)
+
 
 # REGISTER CODE
 @app.route("/register", methods=["GET", "POST"])
@@ -99,11 +97,23 @@ def login():
 
 @app.route("/logout")
 def logout():
+    
     # remove user from session cookie
-    flash("You have been logged out")
-    session.pop("user")
-    session.pop("user_type")
-    return redirect(url_for("index"))
+
+    try:
+
+        if session['user']:
+            session.pop("user")
+            session.pop("user_type")
+            print("You have been logged out")
+            flash("You have been logged out")
+            return redirect(url_for("index"))
+
+    except KeyError:
+
+        flash("please login")
+        return redirect(url_for("index"))
+
 
 
 # PROFILE CODE
@@ -116,13 +126,13 @@ def create_profile():
         user_type = session["user_type"]
         
         if user_type == "player":
- 
 
             dtstr = request.form.get("DOB")
             dt = datetime.datetime.strptime(dtstr, '%Y-%m-%d')
-            date = dt.strftime("%d") , dt.strftime("%m") , dt.strftime("%Y")
+            date = dt.strftime("%Y-%m-%d")
+ 
 
-            edit_profile = {
+            create_profile = {
                 "name": request.form.get("name").lower(),
                 "DOB": date,
                 "current_team": request.form.get("current_team").lower(),
@@ -136,7 +146,7 @@ def create_profile():
         
         else:
 
-            edit_profile = {
+            create_profile = {
                 "name": request.form.get("name").lower(),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
@@ -145,7 +155,7 @@ def create_profile():
                 "user_type": session["user_type"]
             }
 
-        mongo.db.profiles.insert(edit_profile)
+        mongo.db.profiles.insert(create_profile)
         flash("create Successful!")
         return redirect(url_for("read_profile", username=username, user_type=user_type))
 
@@ -161,10 +171,15 @@ def read_profile(username, user_type):
     print(user_type)
 
     if user_type == "player":
+
         for x in check_profile:
+
+            dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
+            date = dt.strftime("%d-%m-%Y")
+
             profile = {
                 "name": x["name"],
-                "DOB": x["DOB"],
+                "DOB": date,
                 "current_team": x["current_team"],
                 "bio": x["bio"],
                 "gender": x["gender"],
@@ -228,7 +243,7 @@ def edit_profile():
 
             profile = {
                 "name": x["name"],
-                "DOB": x["name"],
+                "DOB": x["DOB"],
                 "current_team": x["current_team"],
                 "bio": x["bio"],
                 "gender": x["gender"],
@@ -368,6 +383,7 @@ def update_event(event_id):
         mongo.db.events.save(update_event)
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+
         
 @app.route("/player-profile/<username>", methods=["GET", "POST"])
 def player_profile(username):
@@ -378,9 +394,13 @@ def player_profile(username):
     
 
     for x in check_profile:
+
+        dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
+        date = dt.strftime("%d-%m-%Y")
+
         profile = {
             "name": x["name"],
-            "DOB": x["DOB"],
+            "DOB": date,
             "current_team": x["current_team"],
             "bio": x["bio"],
             "gender": x["gender"],
@@ -391,8 +411,6 @@ def player_profile(username):
 
         ev_query = { "player": username }
 
-
-    
 
     check_events = mongo.db.events.find(ev_query)
     events = []
@@ -406,11 +424,67 @@ def player_profile(username):
             "player": x["player"]
         }
         events.append(event) 
+        
 
-    
+
     print("this is the profile", profile)
     print("this is the event", events)
     return render_template('player-profile-display.html', profile=profile, events=events)
+
+
+# @app.route("/watch-event/<event_id>", methods=["GET"])
+# def watch_event(event_id):
+
+#     username = session["user"]
+
+#     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
+
+#     event = {
+#         "event_id": ev["_id"],
+#         "name": ev["name"],
+#         "time": ev["time"],
+#         "location": ev["location"],
+#         "player": ev["player"],
+#         "scout": username
+#     }
+
+#     mongo.db.events.insert(event)
+
+#     query = { "user": username }
+#     check_profile = mongo.db.profiles.find_one(query)
+    
+#     print("sssssssss", check_profile["name"])
+#     for x in check_profile:
+#         profile = {
+#             "name": x["name"],
+#             "DOB": x["DOB"],
+#             "current_team": x["current_team"],
+#             "bio": x["bio"],
+#             "gender": x["gender"],
+#             "position": x["position"],
+#             "user": username,
+#             "user_type": x["user_type"]
+#         }
+
+#         ev_query = { "player": username }
+
+
+#     check_events = mongo.db.events.find(ev_query)
+#     events = []
+
+#     for x in check_events:
+#         event = {
+#             "_id": x["_id"],
+#             "name": x["name"],
+#             "time": x["time"],
+#             "location": x["location"],
+#             "player": x["player"],
+#             "scout": username
+#         }
+#         events.append(event) 
+
+
+#     return render_template('player-profile-display.html', profile=profile, events=events)
 
 
 if __name__ == "__main__":
