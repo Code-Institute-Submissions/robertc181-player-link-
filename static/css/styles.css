@@ -129,6 +129,12 @@ a:hover{
     padding-top: 30px;
 }
 
+.black{
+    color: black !important;
+    text-decoration: underline !important;
+
+}
+
 
 
 

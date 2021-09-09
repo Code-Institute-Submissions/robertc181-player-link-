@@ -21,10 +21,10 @@
                     <input type="password" id="password" name="password"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" class="form-control" required>
                 </div>
                 <button type="submit" class="bluebtn button">Submit</button>
+                <div>
+                    <p><a class="black" href="{{ url_for('register')}}">Register</a></p>
+                </div>
             </form>
-            <div>
-                <a href="{{ url_for('register')}}">Register</a>
-            </div>
         </div>
     </div>
 {% endblock %}

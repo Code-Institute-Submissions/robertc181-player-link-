@@ -14,7 +14,7 @@
                 <!-- name -->
                 <div class="mb-3 col-md-6">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
+                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" >
                 </div>
                 <!-- date of birth -->
                 <div class="mb-3 col-md-6">
@@ -29,7 +29,7 @@
                 <!-- current team -->
                 <div class="mb-3 col-md-6">
                     <label for="current_team" class="form-label">Current Team</label>
-                    <input type="text" id="current_team" name="current_team"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" class="form-control">
+                    <input type="text" id="current_team" name="current_team"  minlength="5" maxlength="15" class="form-control">
                 </div>
                 <!-- position -->
                 <div class="mb-3 col-md-6">
@@ -44,7 +44,7 @@
                 <!-- bio -->
                 <div class="mb-3 col-md-6">
                     <label for="bio" class="form-label">Bio</label>
-                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
+                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" >
                 </div>
                 <button type="submit" class="bluebtn button" >Submit</button>
             </form>
@@ -61,15 +61,10 @@
     <div class="container-fluid formcol">
         <div class="row">
             <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_profile')}}">
-                <!-- profile pic -->
-                <div class="mb-3 col-md-6">
-                    <label for="username" class="form-label">Profile-pic</label>
-                    <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15">
-                </div>
                 <!-- name -->
                 <div class="mb-3 col-md-6">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" >
+                    <input type="text" id="name" name="name" class="form-control" minlength="3" maxlength="15"  >
                 </div>
                 <!-- gender -->
                 <div class="mb-3 col-md-6">
@@ -79,12 +74,12 @@
                 <!-- cert -->
                 <div class="mb-3 col-md-6">
                     <label for="cert" class="form-label">Certs</label>
-                    <input type="text" id="cert" name="cert" class="form-control"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$">
+                    <input type="text" id="cert" name="cert" class="form-control"  minlength="5" maxlength="15" >
                 </div>
                 <!-- bio -->
                 <div class="mb-3 col-md-6">
                     <label for="bio" class="form-label">Bio</label>
-                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425" pattern="^[a-zA-Z0-9]{5,425}$" >
+                    <input type="textarea" id="bio" name="bio" class="form-control" minlength="5" maxlength="425"  >
                 </div>
                 <button type="submit" class="bluebtn button">Submit</button>
             </form>
