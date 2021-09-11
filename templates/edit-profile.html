@@ -10,7 +10,7 @@
         </div>
         <div class="container-fluid formcol">
             <div class="row">
-                <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('update_profile')}}">
+                <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('update_profile', profile_id=profile.profile_id)}}">
                     <!-- name -->
                     <div class="mb-3 col-md-6">
                         <label for="name" class="form-label">Name</label>
@@ -62,7 +62,7 @@
     </div>
     <div class="container-fluid formcol">
             <div class="row">
-                <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('update_profile')}}">
+                <form class="col-md-6 offset-md-3" method="POST" action="{{  url_for('update_profile', profile_id=profile.profile_id) }}">
                     <!-- name -->
                     <div class="mb-3 col-md-6">
                         <label for="name" class="form-label">Name</label>

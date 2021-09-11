@@ -174,7 +174,6 @@ def read_profile(username, user_type):
     query = { "user": username }
 
     check_profile = mongo.db.profiles.find(query)
-    print(user_type)
 
     if user_type == "player":
 
@@ -241,7 +240,6 @@ def edit_profile(profile_id):
 
     if session["user_type"] == "player":
 
-        # for x in check_profile:
         profile = {
             "profile_id": profile_id,
             "name": check_profile["name"],
@@ -290,8 +288,6 @@ def update_profile(profile_id):
 
         username = session["user"]
 
-        user_type = session["user_type"]
-
         if session["user_type"] == "player":
             update_profile = {
                 "_id": ObjectId(profile_id),
@@ -318,7 +314,6 @@ def update_profile(profile_id):
             }
 
         mongo.db.profiles.save(update_profile)
-        print("profileddddddddddddd")
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
 
@@ -447,59 +442,59 @@ def player_profile(username):
 
 ###########################################################################################################
 
-@app.route("/watch-event/<event_id>", methods=["GET"])
-def watch_event(event_id):
+# @app.route("/watch-event/<event_id>", methods=["GET"])
+# def watch_event(event_id):
 
-    username = session["user"]
+#     username = session["user"]
 
-    ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
+#     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
 
-    event = {
-        "event_id": ev["_id"],
-        "name": ev["name"],
-        "time": ev["time"],
-        "location": ev["location"],
-        "player": ev["player"],
-        "scout": username
-    }
+#     event = {
+#         "event_id": ev["_id"],
+#         "name": ev["name"],
+#         "time": ev["time"],
+#         "location": ev["location"],
+#         "player": ev["player"],
+#         "scout": username
+#     }
 
-    mongo.db.events.insert(event)
+#     mongo.db.events.insert(event)
 
-    query = { "user": username }
-    check_profile = mongo.db.profiles.find_one(query)
+#     query = { "user": username }
+#     check_profile = mongo.db.profiles.find_one(query)
 
-    print("sssssssss", check_profile["name"])
-    for x in check_profile:
-        profile = {
-            "name": x["name"],
-            "DOB": x["DOB"],
-            "current_team": x["current_team"],
-            "bio": x["bio"],
-            "gender": x["gender"],
-            "position": x["position"],
-            "user": username,
-            "user_type": x["user_type"]
-        }
+#     print("sssssssss", check_profile["name"])
+#     for x in check_profile:
+#         profile = {
+#             "name": x["name"],
+#             "DOB": x["DOB"],
+#             "current_team": x["current_team"],
+#             "bio": x["bio"],
+#             "gender": x["gender"],
+#             "position": x["position"],
+#             "user": username,
+#             "user_type": x["user_type"]
+#         }
 
-        ev_query = { "player": username }
-
-
-    check_events = mongo.db.events.find(ev_query)
-    events = []
-
-    for x in check_events:
-        event = {
-            "_id": x["_id"],
-            "name": x["name"],
-            "time": x["time"],
-            "location": x["location"],
-            "player": x["player"],
-            "scout": username
-        }
-        events.append(event) 
+#         ev_query = { "player": username }
 
 
-    return render_template('player-profile-display.html', profile=profile, events=events)
+#     check_events = mongo.db.events.find(ev_query)
+#     events = []
+
+#     for x in check_events:
+#         event = {
+#             "_id": x["_id"],
+#             "name": x["name"],
+#             "time": x["time"],
+#             "location": x["location"],
+#             "player": x["player"],
+#             "scout": username
+#         }
+#         events.append(event) 
+
+
+#     return render_template('player-profile-display.html', profile=profile, events=events)
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),

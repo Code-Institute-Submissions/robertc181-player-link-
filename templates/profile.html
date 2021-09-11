@@ -20,7 +20,7 @@
                                 <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
 
                                 <div class="col">
-                                        <button class="bluebtn button right"><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+                                        <button class="bluebtn button right"><a href="{{ url_for('edit_profile', profile_id=profile._id) }}">edit Profile</a></button>
                                 </div>
                                 
                         </div>
@@ -94,7 +94,7 @@
                         <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
 
                         <div class="col">
-                                <button class="bluebtn button right"><a href="{{ url_for('edit_profile') }}">edit Profile</a></button>
+                                <button class="bluebtn button right"><a href="{{ url_for('edit_profile', profile_id=profile._id) }}">edit Profile</a></button>
                         </div>
                         
                 </div>
