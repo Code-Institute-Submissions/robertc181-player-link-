@@ -21,6 +21,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+###########################################################################################################
 
 @app.route("/")
 @app.route("/index")
@@ -28,6 +29,7 @@ def index():
     users = mongo.db.users.find()
     return render_template("index.html", users=users)
 
+###########################################################################################################
 
 # REGISTER CODE
 @app.route("/register", methods=["GET", "POST"])
@@ -56,6 +58,7 @@ def register():
 
     return render_template("register.html")
 
+###########################################################################################################
 
 @app.route("/registered/<username>/<user_type>", methods=["GET", "POST"])
 def registered(username, user_type):
@@ -67,7 +70,7 @@ def registered(username, user_type):
 
     return redirect(url_for("login"))
 
-
+###########################################################################################################
 
 # LOGIN CODE
 @app.route("/login", methods=["GET", "POST"])
@@ -96,6 +99,8 @@ def login():
 
     return render_template("login.html")
 
+###########################################################################################################
+
 @app.route("/logout")
 def logout():   
     # remove user from session cookie    
@@ -113,8 +118,8 @@ def logout():
         return redirect(url_for("index"))
 
 
-#########################################################################
-#
+###########################################################################################################
+
 # PROFILE CODE
 @app.route("/create-profile", methods=["GET", "POST"])
 def create_profile():
@@ -159,6 +164,8 @@ def create_profile():
         return redirect(url_for("read_profile", username=username, user_type=user_type))
 
     return render_template("create-profile.html")
+
+###########################################################################################################
 
 
 @app.route("/read-profile/<username>/<user_type>", methods=["GET", "POST"])
@@ -225,43 +232,43 @@ def read_profile(username, user_type):
     print(profile)
     return render_template('profile.html', profile=profile, events=events, users=users)
 
-
+###########################################################################################################
 
 @app.route("/edit-profile/<profile_id>", methods=["GET", "POST"])
 def edit_profile(profile_id):
     
-    check_profile = mongo.db.events.find_one({"_id": ObjectId(profile_id)})
+    check_profile = mongo.db.profiles.find_one({"_id": ObjectId(profile_id)})
 
     if session["user_type"] == "player":
 
-        for x in check_profile:
-            profile = {
-                "profile_id": x["_id"],
-                "name": x["name"],
-                "DOB": x["DOB"],
-                "current_team": x["current_team"],
-                "bio": x["bio"],
-                "gender": x["gender"],
-                "position": x["position"],
-                "user": x["user"],
-                "user_type": x["user_type"]
-            }
+        # for x in check_profile:
+        profile = {
+            "profile_id": profile_id,
+            "name": check_profile["name"],
+            "DOB": check_profile["DOB"],
+            "current_team": check_profile["current_team"],
+            "bio": check_profile["bio"],
+            "gender": check_profile["gender"],
+            "position": check_profile["position"],
+            "user": check_profile["user"],
+            "user_type": check_profile["user_type"]
+        }
     else:
-        for x in check_profile:
-            profile = {
-                "profile_id": x["_id"],
-                "name": x["name"],
-                "cert": x["cert"],
-                "bio": x["bio"],
-                "gender": x["gender"],
-                "user": x["user"],
-                "user_type": x["user_type"]
-            }
-        
-        return render_template("edit-profile.html", profile=profile )
+        profile = {
+            "profile_id": profile_id,
+            "name": check_profile["name"],
+            "cert": check_profile["cert"],
+            "bio": check_profile["bio"],
+            "gender": check_profile["gender"],
+            "user": check_profile["user"],
+            "user_type": check_profile["user_type"]
+        }
 
+        return render_template("edit-profile.html", profile=profile )
+    
     return render_template("edit-profile.html", profile=profile )
 
+###########################################################################################################
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
@@ -274,6 +281,8 @@ def profile(username):
         user_type=user_type)
 
     return redirect(url_for("login"))
+
+###########################################################################################################
 
 @app.route("/update-profile/<profile_id>", methods=["GET", "POST"])
 def update_profile(profile_id):
@@ -309,9 +318,12 @@ def update_profile(profile_id):
             }
 
         mongo.db.profiles.save(update_profile)
+        print("profileddddddddddddd")
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
 
+
+###########################################################################################################
 
 # EVENTS CODE
 
@@ -334,6 +346,8 @@ def create_event():
 
     return render_template("create-event.html")
 
+###########################################################################################################
+
 
 @app.route("/delete-event/<event_id>")
 def delete_event(event_id):
@@ -346,6 +360,7 @@ def delete_event(event_id):
     flash("delete Event Successful!")
     return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
+###########################################################################################################
     
 @app.route("/edit-event/<event_id>", methods=["GET"])
 def edit_event(event_id):
@@ -362,6 +377,7 @@ def edit_event(event_id):
 
     return render_template("edit-event.html", event=event)
 
+###########################################################################################################
 
 @app.route("/update-event/<event_id>", methods=["POST"])
 def update_event(event_id):
@@ -382,7 +398,8 @@ def update_event(event_id):
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
-        
+###########################################################################################################    
+    
 @app.route("/player-profile/<username>", methods=["GET", "POST"])
 def player_profile(username):
     
@@ -428,6 +445,61 @@ def player_profile(username):
     print("this is the event", events)
     return render_template('player-profile-display.html', profile=profile, events=events)
 
+###########################################################################################################
+
+@app.route("/watch-event/<event_id>", methods=["GET"])
+def watch_event(event_id):
+
+    username = session["user"]
+
+    ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
+
+    event = {
+        "event_id": ev["_id"],
+        "name": ev["name"],
+        "time": ev["time"],
+        "location": ev["location"],
+        "player": ev["player"],
+        "scout": username
+    }
+
+    mongo.db.events.insert(event)
+
+    query = { "user": username }
+    check_profile = mongo.db.profiles.find_one(query)
+
+    print("sssssssss", check_profile["name"])
+    for x in check_profile:
+        profile = {
+            "name": x["name"],
+            "DOB": x["DOB"],
+            "current_team": x["current_team"],
+            "bio": x["bio"],
+            "gender": x["gender"],
+            "position": x["position"],
+            "user": username,
+            "user_type": x["user_type"]
+        }
+
+        ev_query = { "player": username }
+
+
+    check_events = mongo.db.events.find(ev_query)
+    events = []
+
+    for x in check_events:
+        event = {
+            "_id": x["_id"],
+            "name": x["name"],
+            "time": x["time"],
+            "location": x["location"],
+            "player": x["player"],
+            "scout": username
+        }
+        events.append(event) 
+
+
+    return render_template('player-profile-display.html', profile=profile, events=events)
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
