@@ -1,30 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="container-fluid headingtop">
-        <div class="row">
-            <div class="col">
-                <h2 class="title">Login</h2>
-            </div>
+<div class="container-fluid headingtop">
+    <div class="row">
+        <div class="col">
+            <h2 class="title">Login</h2>
         </div>
     </div>
-    <div class="container-fluid formcol"></div>
-        <div class="row">
-            <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('login')}}">
-                <!-- username -->
-                <div class="mb-3 col-md-6">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" required>
-                </div>
-                <!-- password -->
-                <div class="mb-3 col-md-6">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password"  minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5,15}$" class="form-control" required>
-                </div>
-                <button type="submit" class="bluebtn button">Submit</button>
-                <div>
-                    <p><a class="black" href="{{ url_for('register')}}">Register</a></p>
-                </div>
-            </form>
+</div>
+<div class="container-fluid formcol"></div>
+<div class="row">
+    <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('login')}}">
+        <!-- username -->
+        <div class="mb-3 col-md-6">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" class="form-control" minlength="3" maxlength="15"
+                pattern="^[a-zA-Z0-9]{3,15}$" required>
         </div>
-    </div>
+        <!-- password -->
+        <div class="mb-3 col-md-6">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" minlength="5" maxlength="15"
+                pattern="^[a-zA-Z0-9]{5,15}$" class="form-control" required>
+        </div>
+        <button type="submit" class="bluebtn button">Submit</button>
+        <div>
+            <p><a class="black" href="{{ url_for('register')}}">Register</a></p>
+        </div>
+    </form>
+</div>
+</div>
 {% endblock %}

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- Header -->
+<div class="container-fluid callout-container">
 
-    <div class="container-fluid callout-container">
-
-        <section class="callout jumbotron text-center">
-            <h1 class="p-light p-dark jumbotron-header heading">Identify | Link | Talent</h1>
-            <p class="lead">Create an account now and start your scouting experience</p>
-            <button class="bluebtn button"><a href="{{ url_for('register') }}">register</a></button>
-        </section>
-    </div>
+    <section class="callout jumbotron text-center">
+        <h1 class="p-light p-dark jumbotron-header heading">Identify | Link | Talent</h1>
+        <p class="lead">Create an account now and start your scouting experience</p>
+        <button class="bluebtn button"><a href="{{ url_for('register') }}">register</a></button>
+    </section>
+</div>
 
 {% endblock %}
