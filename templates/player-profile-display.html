@@ -60,12 +60,13 @@
                                                 <td>{{ event["player"] }}</td>
                                                 {% if event["scout"] %}
                                                         <td>{{ event["scout"] }}</td>
-                                                {% endif %}
-                                                <td>
-                                                        <button class="bluebtn buttonsm "><a href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a></button>
-                        
-                                                </td>
                                                 
+                                                {% else %}
+                                                        <td>
+                                                                <button class="bluebtn buttonsm "><a href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a></button>
+                        
+                                                        </td>
+                                                {% endif %}
                                         </tr>
                                         {% endfor %}
                                         {% endif %}
