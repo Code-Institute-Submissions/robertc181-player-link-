@@ -4,7 +4,6 @@ from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
-# from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -23,6 +22,7 @@ mongo = PyMongo(app)
 
 ###########################################################################################################
 
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -32,6 +32,8 @@ def index():
 ###########################################################################################################
 
 # REGISTER CODE
+
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -60,6 +62,7 @@ def register():
 
 ###########################################################################################################
 
+
 @app.route("/registered/<username>/<user_type>", methods=["GET", "POST"])
 def registered(username, user_type):
     username = session["user"]
@@ -73,20 +76,22 @@ def registered(username, user_type):
 ###########################################################################################################
 
 # LOGIN CODE
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         # check if username exists in db
-        check_user = mongo.db.users.find_one({"username": request.form.get("username").lower()})
+        check_user = mongo.db.users.find_one(
+            {"username": request.form.get("username").lower()})
 
-        
         if check_user:
             # ensure hashed password matches user input
             if check_password_hash(check_user["password"], request.form.get("password")):
-                        session["user"] = request.form.get("username").lower() 
-                        session["user_type"] = check_user["user_type"]
-                        flash("Welcome, {}".format(request.form.get("username")))
-                        return redirect(url_for("read_profile", profilename=session["user"], username=session["user"], user_type=session["user_type"]))
+                session["user"] = request.form.get("username").lower()
+                session["user_type"] = check_user["user_type"]
+                flash("Welcome, {}".format(request.form.get("username")))
+                return redirect(url_for("read_profile", profilename=session["user"], username=session["user"], user_type=session["user_type"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -101,9 +106,10 @@ def login():
 
 ###########################################################################################################
 
+
 @app.route("/logout")
-def logout():   
-    # remove user from session cookie    
+def logout():
+    # remove user from session cookie
     try:
         if session['user']:
             session.pop("user")
@@ -128,14 +134,13 @@ def create_profile():
         username = session["user"]
 
         user_type = session["user_type"]
-        
-        if user_type == "player":
 
+        if user_type == "player":
+            # Using datetime to format date
             dtstr = request.form.get("DOB")
             dt = datetime.datetime.strptime(dtstr, '%Y-%m-%d')
             date = dt.strftime("%Y-%m-%d")
- 
-
+            # Populate create profile object
             create_profile = {
                 "name": request.form.get("name").lower(),
                 "DOB": date,
@@ -147,9 +152,8 @@ def create_profile():
                 "user_type": session["user_type"]
             }
 
-        
         else:
-
+            # Populate event if user_type is scout
             create_profile = {
                 "name": request.form.get("name").lower(),
                 "bio": request.form.get("bio").lower(),
@@ -170,18 +174,18 @@ def create_profile():
 
 @app.route("/read-profile/<username>/<user_type>", methods=["GET", "POST"])
 def read_profile(username, user_type):
-    
-    query = { "user": username }
+
+    query = {"user": username}
 
     check_profile = mongo.db.profiles.find(query)
 
     if user_type == "player":
 
         for x in check_profile:
-
+            # Using datetime to format date from date picker
             dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
             date = dt.strftime("%d-%m-%Y")
-
+            # Getting profile data from mongo
             profile = {
                 "_id": x["_id"],
                 "name": x["name"],
@@ -194,11 +198,11 @@ def read_profile(username, user_type):
                 "user_type": x["user_type"]
             }
 
-        ev_query = { "player": username }
+        ev_query = {"player": username}
 
         check_events = mongo.db.events.find(ev_query)
         events = []
-
+        # Getting event data from mongo
         for x in check_events:
             if "scout" in x:
                 event = {
@@ -222,6 +226,7 @@ def read_profile(username, user_type):
 
     else:
         events = []
+        # Getting profile data from mongo if user_type is scout
         for x in check_profile:
             profile = {
                 "_id": x["_id"],
@@ -234,8 +239,10 @@ def read_profile(username, user_type):
             }
 
     if request.method == "POST":
+        # Finding players from mongo in search input
         query = request.form.get("query")
-        players = list(mongo.db.profiles.find({"name": {'$regex': query}, "user_type": "player"}))
+        players = list(mongo.db.profiles.find(
+            {"name": {'$regex': query}, "user_type": "player"}))
     else:
         players = []
 
@@ -244,13 +251,14 @@ def read_profile(username, user_type):
 
 ###########################################################################################################
 
+
 @app.route("/edit-profile/<profile_id>", methods=["GET", "POST"])
 def edit_profile(profile_id):
-    
+
     check_profile = mongo.db.profiles.find_one({"_id": ObjectId(profile_id)})
 
     if session["user_type"] == "player":
-
+        # Populate update profile object
         profile = {
             "profile_id": profile_id,
             "name": check_profile["name"],
@@ -263,6 +271,7 @@ def edit_profile(profile_id):
             "user_type": check_profile["user_type"]
         }
     else:
+        # Populate profile object if user_type is scout
         profile = {
             "profile_id": profile_id,
             "name": check_profile["name"],
@@ -273,25 +282,27 @@ def edit_profile(profile_id):
             "user_type": check_profile["user_type"]
         }
 
-        return render_template("edit-profile.html", profile=profile )
-    
-    return render_template("edit-profile.html", profile=profile )
+        return render_template("edit-profile.html", profile=profile)
+
+    return render_template("edit-profile.html", profile=profile)
 
 ###########################################################################################################
+
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
 
     username = session["user"]
     user_type = session["user_type"]
-
+    # Rendering the profile 
     if session["user"] and session["user_type"]:
         return render_template("profile.html", username=username,
-        user_type=user_type)
+                               user_type=user_type)
 
     return redirect(url_for("login"))
 
 ###########################################################################################################
+
 
 @app.route("/update-profile/<profile_id>", methods=["GET", "POST"])
 def update_profile(profile_id):
@@ -300,6 +311,7 @@ def update_profile(profile_id):
         username = session["user"]
 
         if session["user_type"] == "player":
+            # Populate update profile object
             update_profile = {
                 "_id": ObjectId(profile_id),
                 "name": request.form.get("name").lower(),
@@ -313,6 +325,7 @@ def update_profile(profile_id):
             }
 
         else:
+            # Populate update profile object user_type is scout
             update_profile = {
                 "_id": ObjectId(profile_id),
                 "name": request.form.get("name").lower(),
@@ -326,7 +339,7 @@ def update_profile(profile_id):
 
         mongo.db.profiles.save(update_profile)
         flash("update Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
+        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
 
 ###########################################################################################################
@@ -338,7 +351,7 @@ def create_event():
     if request.method == "POST":
 
         username = session["user"]
-
+        # Populate event object from the form
         event = {
             "name": request.form.get("name").lower(),
             "time": request.form.get("time"),
@@ -349,7 +362,7 @@ def create_event():
 
         mongo.db.events.insert(event)
         flash("create Event Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=session["user_type"] ))
+        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
     return render_template("create-event.html")
 
@@ -362,18 +375,19 @@ def delete_event(event_id):
     username = session["user"]
 
     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
-
+    # Removing event data from mongo
     mongo.db.events.remove(ev)
     flash("delete Event Successful!")
     return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
 ###########################################################################################################
-    
+
+
 @app.route("/edit-event/<event_id>", methods=["GET"])
 def edit_event(event_id):
 
     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
-
+    # Populate event object for the form
     event = {
         "event_id": ev["_id"],
         "name": ev["name"],
@@ -381,12 +395,13 @@ def edit_event(event_id):
         "location": ev["location"],
         "player": ev["player"],
         "scout": ev["scout"]
-        
+
     }
 
     return render_template("edit-event.html", event=event)
 
 ###########################################################################################################
+
 
 @app.route("/update-event/<event_id>", methods=["POST"])
 def update_event(event_id):
@@ -396,7 +411,7 @@ def update_event(event_id):
         username = session["user"]
 
         ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
-
+        # Populate update event object
         update_event = {
             "_id": ObjectId(event_id),
             "name": request.form.get("eventname"),
@@ -410,24 +425,23 @@ def update_event(event_id):
         flash("update Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
-###########################################################################################################    
-    
+###########################################################################################################
+
+
 @app.route("/player-profile/<player_name>", methods=["GET", "POST"])
 def player_profile(player_name):
 
     username = session["user"]
-    
-    query = { "name": player_name }
+
+    query = {"name": player_name}
 
     check_profile = mongo.db.profiles.find(query)
-    
-
 
     for x in check_profile:
-
+        # Format datepicker data with datetime
         dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
         date = dt.strftime("%d-%m-%Y")
-
+        # Populate player profile object
         profile = {
             "name": x["name"],
             "DOB": date,
@@ -439,14 +453,14 @@ def player_profile(player_name):
             "user_type": x["user_type"]
         }
 
-        ev_query = { "player": player_name }
-
+        ev_query = {"player": player_name}
 
     check_events = mongo.db.events.find(ev_query)
     events = []
 
     for x in check_events:
         if "scout" in x:
+            # Populate players event object
             event = {
                 "_id": x["_id"],
                 "name": x["name"],
@@ -457,6 +471,7 @@ def player_profile(player_name):
 
             }
         else:
+            # Populate players event object if scout doesn't exist
             event = {
                 "_id": x["_id"],
                 "name": x["name"],
@@ -464,11 +479,12 @@ def player_profile(player_name):
                 "location": x["location"],
                 "player": x["player"]
             }
-        events.append(event)    
+        events.append(event)
 
     return render_template('player-profile-display.html', profile=profile, events=events)
 
 ###########################################################################################################
+
 
 @app.route("/watch-event/<event_id>", methods=["GET"])
 def watch_event(event_id):
@@ -476,6 +492,7 @@ def watch_event(event_id):
     username = session["user"]
 
     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
+    # Populate event object with scout
     event = {
         "_id": ObjectId(event_id),
         "name": ev["name"],
@@ -487,6 +504,9 @@ def watch_event(event_id):
     mongo.db.events.save(event)
     flash("watching event")
     return redirect(url_for("player_profile", player_name=event["player"]))
+
+###########################################################################################################
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
