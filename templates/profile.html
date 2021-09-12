@@ -123,11 +123,25 @@
                                         <button class="bluebtn buttonsm">Search</button>
                                 </form>
                                 <div class="col top">
-                                        <tr>
-                                                {% for user in users %}
-                                                    <td><button class="bluebtn button"><a href="{{ url_for('player_profile', username=user.username)}}">{{ user.username }}</a></button></td><br>   
-                                                {% endfor %}
-                                        </tr> 
+                                        <table class="table">
+                                                <thead>
+                                                        <tr>
+                                                                <th scope="col">Player Name</th>
+                                                                <th scope="col">Current Team</th>
+                                                                <th scope="col"></th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                        {% for player in players %}
+                                                        <tr>
+                                                                <td>{{ player["name"] }}</td>
+                                                                <td>{{ player["current_team"] }}</td>
+                                                                <td><button class="bluebtn button"><a href="{{ url_for('player_profile', player_name=player.name)}}">View</a></button></td>   
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                </tbody>
+                                        </table>
                                 </div>
                         </div>
                 </div>
