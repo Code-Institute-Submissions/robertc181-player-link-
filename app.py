@@ -235,11 +235,12 @@ def read_profile(username, user_type):
 
     if request.method == "POST":
         query = request.form.get("query")
-        users = list(mongo.db.users.find({"username": {'$regex': query}, "user_type": "player"}))
+        players = list(mongo.db.profiles.find({"name": {'$regex': query}, "user_type": "player"}))
     else:
-        users = []
-            
-    return render_template('profile.html', profile=profile, events=events, users=users)
+        players = []
+
+    print(players)
+    return render_template('profile.html', profile=profile, events=events, players=players)
 
 ###########################################################################################################
 
@@ -411,10 +412,12 @@ def update_event(event_id):
 
 ###########################################################################################################    
     
-@app.route("/player-profile/<username>", methods=["GET", "POST"])
-def player_profile(username):
+@app.route("/player-profile/<player_name>", methods=["GET", "POST"])
+def player_profile(player_name):
+
+    username = session["user"]
     
-    query = { "user": username }
+    query = { "name": player_name }
 
     check_profile = mongo.db.profiles.find(query)
     
@@ -436,7 +439,7 @@ def player_profile(username):
             "user_type": x["user_type"]
         }
 
-        ev_query = { "player": username }
+        ev_query = { "player": player_name }
 
 
     check_events = mongo.db.events.find(ev_query)
@@ -483,7 +486,7 @@ def watch_event(event_id):
     }
     mongo.db.events.save(event)
     flash("watching event")
-    return redirect(url_for("player_profile", username=event["player"]))
+    return redirect(url_for("player_profile", player_name=event["player"]))
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
