@@ -75,6 +75,8 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 3. As a scout I want to be able to attend a players event.
 
+4. As a scout I want to be able to see all event im attending.
+
 
 ## Scope
 
@@ -149,40 +151,44 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 # Features
 
+## Database structure
+
+- [Finished Data Structure after changes](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure/Player-link.pdf/)
+
 ## Existing Features
 
 | Feature        | Detailes           | 
 | ------------- |:-------------:| 
-| login     | The user can register and log into their own account with personalised features | 
-| logout     | There is a log out functionality on the page | 
-| register     | The user can register and create an account | 
-| create profile     | After a user has registered they can then create a profile | 
-| edit profile     | After a user has created a profile they can edit thier profile and change information | 
-| create event     | A user can create an event for a game or tournament they are due to attend | 
-| edit event     | A player can edit thier event after it has been created | 
-| delete event     | A player can delete an event | 
-| search player     | A scout can search for players | 
-| open player profile account     | A scout can open a players account and see all of thier events | 
-| watch event     | A scout can click to watch an event and the player will see that he is going | 
+| login     | The user can register and log into their own account with personalised features. | 
+| logout     | There is a log out functionality on the page. | 
+| register     | The user can register and create an account. | 
+| create profile     | After a user has registered they can then create a profile. | 
+| edit profile     | After a user has created a profile they can edit thier profile and change information. | 
+| create event     | A user can create an event for a game or tournament they are due to attend. | 
+| edit event     | A player can edit thier event after it has been created. | 
+| delete event     | A player can delete an event. | 
+| search player     | A scout can search for players. | 
+| open player profile account     | A scout can open a players account and see all of thier events. | 
+| watch event     | A scout can click to watch an event and the player will see that he is going. |
+| going event     | A scout can see all the events that he has chosen to watch. | 
 
 
 ## Features left to implement
 
 | Feature        | Detailes           | 
 | ------------- |:-------------:| 
-| follow player     |  | 
-| see scouts     |  | 
-| watched events     |  | 
-| going events     |  | 
+| follow player     | A scout could follow a player and keep up to date with the players events. | 
+| see scouts     | A player could see all the scouts that have followd him. | 
+| watched events     | A scout could see all the event that he has been to. | 
+| going events     | A scout could see all the event that he has been to. | 
+| positions     | a player could add what position he plays in | 
 
 # Bugs
 
-| Feature        | Detailes           | 
+| Feature        | Detailes     | 
 | ------------- |:-------------:| 
-| follow player     |  | 
-| see scouts     |  | 
-| watched events     |  | 
-| going events     |  | 
+| positions     | As a player creates an account he creates a  position but this data is not thrown to the database and not used throughout the website | 
+
 
 # Technologies Used
 
@@ -255,27 +261,29 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 3. As a scout I want to be able to attend a players event.
     * in the events section of the players profile a scout can click to watch avent and will show up undr scouts in the players event table.
 
+4. As a scout I want to be able to see all events im attending.
+    * In the going events section of the scouts profile you can view all events that you have choosen to watch 
+
 ## Performance testing:
 
 * Tested website responsiveness using http://www.responsinator.com/
     * Results: The website is basically responsive to all device sizes.
 * I used the Google Dev Tools - Network
     * Results: The site loading time is grand
-
-All HTML pages were tested using https://jigsaw.w3.org/css-validator/validator
-All but the 'base' template resulted in errors that the Lang Doctype and Title were missing. This was to be expected as the details were being extended from the base template to did not need to be added
-All HTML pages resulted in errors where the Jinja template language was used
-None of these are actual errors within the code
-Tested the CSS using http://www.css-validator.org/
-No errors were found
-Tested the website on the Google Chrome browser Version 87.0.4280.88 (Official Build) (64-bit)
-Results: The website was responsive and the elements performed in the way they were intended to
-Tested the website on the Microsoft Edge browser Version Version 87.0.664.66 (Official build) (64-bit)
-Results: The website was responsive and the elements performed in the way they were intended to
-Tested the website on the Firefox browser Version 82.0.3 (64-bit)
-Results: The website was responsive and the elements performed in the way they were intended to
-Tested the form validation worked correctly on each of the above browsers
-Results: The form correctly sent when the fields were completed as they should have been and did not when the fields had not been completed
+* All HTML pages were tested using https://jigsaw.w3.org/css-validator/validator
+    * All but the 'base' template resulted in errors that the Lang Doctype and Title were missing. This was to be  expected as the details were being extended from the base template to did not need to be added
+    All HTML pages resulted in errors where the Jinja template language was used
+    None of these are actual errors within the code
+* Tested the CSS using http://www.css-validator.org/
+    * No errors were found
+* Tested the website on the Google Chrome browser Version 87.0.4280.88 (Official Build) (64-bit)
+    * Results: The website was responsive and the elements performed in the way they were intended to
+* Tested the website on the Microsoft Edge browser Version Version 87.0.664.66 (Official build) (64-bit)
+    * Results: The website was responsive and the elements performed in the way they were intended to
+* Tested the website on the Firefox browser Version 82.0.3 (64-bit)
+    * Results: The website was responsive and the elements performed in the way they were intended to
+* Tested the form validation worked correctly on each of the above browsers
+    * Results: The form correctly sent when the fields were completed as they should have been and did not when the fields had not been completed
 
 # Deployment
 
