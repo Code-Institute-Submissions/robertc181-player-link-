@@ -153,7 +153,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 ## Database structure
 
-- [Finished Data Structure after all changes](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure/Player-link (1).pdf/)
+- [Finished Data Structure after all changes](https://github.com/robertc181/player-link-/blob/main/Plan/data-structure/Player-link%20(1).pdf)
 
 ## Existing Features
 
