@@ -1,4 +1,4 @@
-# Player Link
+* - [# Player Link](https://playerlink.herokuapp.com/)
 
 # Contents
 
@@ -24,7 +24,7 @@
 
 # Summary
 
-Player Link is an online platform that will link football players with scouts, So that scouts can watch a football player and find out when they will be playing there next football games and more information about that player, such as current team , position , preffered foot etc. This platform will also allow a player to view which scouts are watching them and which scouts will be going to thier games. A player will be able to create an account with Player Link and put up information about themselves, they can also create an event which they can set a time place and name. If a scout searches for a player on Player Link they will be allowed to view a players events and click on the ones that they wish to go to. 
+Player Link is an online platform that will link football players with scouts, So that scouts can watch a football player and find out when they will be playing there next football games and more information about that player, such as current team , position , preffered foot etc. A player will be able to create an account with Player Link and put up information about themselves, they can also create an event which they can set a time place and name. If a scout searches for a player on Player Link they will be allowed to view a players events and click on the ones that they wish to go to. 
 
 A scout can also sign up with Player Link to find talented footballers and get more information about them and there football games. They will have a profile where they can search for players and view all players profiles and see thier events 
 
@@ -32,7 +32,7 @@ A scout can also sign up with Player Link to find talented footballers and get m
 
 ## App Goals
 
-My objective with Player Link is to firstly allow scouts who are struggling to find players around thier area to scout and help them connect with players and hopefull come accross some talent, Player Link allows a scout to search for a players name then click to view that players profile. A scout can click to attend an event such as a game or tournament which will notify the player that the scout is going to thier event. As a player this allows many player with a chance to connect with more scouts and hopefully get a better chance to showcase thier talent and invite more scouts to thier games.
+My objective with Player Link is to firstly allow scouts who are struggling to find players around thier area to scout and help them connect with players and hopefully come accross some talent, Player Link allows a scout to search for a players name then click to view that players profile. A scout can click to attend an event such as a game or tournament which will notify the player that the scout is going to thier event. As a player this allows many player with a chance to connect with more scouts and hopefully get a better chance to showcase thier talent and invite more scouts to thier games.
 
 ## Strategy
 
@@ -75,14 +75,14 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 3. As a scout I want to be able to attend a players event.
 
-4. As a scout I want to be able to see all event im attending.
+4. As a scout I want to be able to see all event i'm attending.
 
 
 ## Scope
 
 ### Functional requirements:
 
-### For ease of use:
+#### For ease of use:
 
 * Navigation bar which is simple and easy to navigate
 
@@ -119,7 +119,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 * Navigation bar at the top of the page
 * Responsive navigation bar - adjusting for mobile for ease of use
 * Responsive forms to ensure they fit within the designated spaces, no matter what device is being used or the size of the screen
-* All features appropriate size and responsive for mobile and desktop viewing
+* Mainly all features appropriate size and responsive for mobile and desktop viewing
 
 
 ## Skeleton
@@ -153,7 +153,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 ## Database structure
 
-- [Finished Data Structure after changes](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure/Player-link.pdf/)
+- [Finished Data Structure after all changes](https://github.com/robertc181/player-link-/blob/master/Plan/data-structure/Player-link.pdf/)
 
 ## Existing Features
 
@@ -187,7 +187,8 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 | Feature        | Detailes     | 
 | ------------- |:-------------:| 
-| positions     | As a player creates an account he creates a  position but this data is not thrown to the database and not used throughout the website | 
+| navigation drob down & Delete button modal     | To get both the navigation dropdown and the delete button modal I had to use two versions of bootstrap so that both would work which may crete an error in the console but it does not detrement the app in any way and I have shown that I know why its there but have no way to change the outcome. |
+|  favicon    | For an unknow reason there is a favicon error in the console even tho I have not added a favicon ? | 
 
 
 # Technologies Used
@@ -245,7 +246,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
     * An edit event button is visable in the events table with takes you to a form that after submitting your new info updates said event.
 
 3. As a player I want to be able to delete an event.
-    * A delete button is present in the events table and deletes the event.
+    * A delete button is present in the events table and deletes the event. It also shows a modal that allows the user a chance to consider deleting the event.
 
 4. As a player I want to be able to see if any scouts are attending my events.
     * A scouts section in the events table is present which allows you to see any scouts that have clicked to go to your event.
