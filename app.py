@@ -247,8 +247,6 @@ def read_profile(username, user_type):
             {"name": {'$regex': query}, "user_type": "player"}))
     else:
         players = []
-
-    print(players)
     return render_template('profile.html', profile=profile, events=events, players=players)
 
 ###########################################################################################################
@@ -353,7 +351,6 @@ def create_event(profile_id):
         username = session["user"]
 
         pr = mongo.db.profiles.find_one({"_id": ObjectId(profile_id)})
-        print("dddddddddddd" ,pr["name"])
         # Populate event object from the form
         event = {
             "name": request.form.get("name").lower(),
@@ -416,7 +413,6 @@ def update_event(event_id):
         username = session["user"]
 
         ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
-        print("fffffffffffffffffffffff", ev)
         # Populate update event object
         update_event = {
             "_id": ObjectId(event_id),
@@ -458,15 +454,12 @@ def player_profile(player_name):
             "user": username,
             "user_type": x["user_type"]
         }
-    print("gggggggggggggggg", player_name)
     ev_query = {"playername": player_name}
 
     check_events = mongo.db.events.find(ev_query)
     events = []
-    print("check_events", check_events)
     for x in check_events:
         if "scout" in x:
-            print("scout")
             # Populate players event object
             event = {
                 "_id": x["_id"],
@@ -480,7 +473,6 @@ def player_profile(player_name):
             }
         else:
             # Populate players event object if scout doesn't exist
-            print("no scout")
             event = {
                 "_id": x["_id"],
                 "name": x["name"],
