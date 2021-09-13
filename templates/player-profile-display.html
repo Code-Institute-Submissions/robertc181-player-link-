@@ -4,7 +4,7 @@
 <div class="container-fluid headingtop">
         <div class="row">
                 <div class="col">
-                        <h2 class="title">{{ profile.user }}'s Profile</h2>
+                        <h2 class="title">{{ profile.name }}'s Profile</h2>
                 </div>
         </div>
 </div>
@@ -48,7 +48,7 @@
                                 <tbody>
                                         {% if events == [] %}
                                         <div class="col">
-                                                <p>{{ profile.user }} has no events yet</p>
+                                                <p>{{ profile.name }} has no events yet</p>
                                         </div>
                                         {% else %}
                                         {% for event in events %}

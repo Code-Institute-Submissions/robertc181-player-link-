@@ -9,7 +9,7 @@
 </div>
 <div class="container-fluid formcol">
     <div class="row">
-        <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_event')}}">
+        <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('create_event',  profile_id=profile_id) }}">
             <!-- profile pic -->
             <div class="mb-3 col-md-6">
                 <label for="eventname" class="form-label">Event Name</label>

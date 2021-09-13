@@ -211,6 +211,7 @@ def read_profile(username, user_type):
                     "time": x["time"],
                     "location": x["location"],
                     "player": x["player"],
+                    "playername": x["playername"],
                     "scout": x["scout"]
 
                 }
@@ -220,12 +221,15 @@ def read_profile(username, user_type):
                     "name": x["name"],
                     "time": x["time"],
                     "location": x["location"],
-                    "player": x["player"]
+                    "player": x["player"],
+                    "playername": x["playername"]
                 }
             events.append(event)
 
     else:
-        events = []
+        # Getting  watched event data from mongo if user_type is scout
+        events = list(mongo.db.events.find({"scout":username}))
+        
         # Getting profile data from mongo if user_type is scout
         for x in check_profile:
             profile = {
@@ -346,17 +350,21 @@ def update_profile(profile_id):
 
 # EVENTS CODE
 
-@app.route("/create-event", methods=["GET", "POST"])
-def create_event():
+@app.route("/create-event/<profile_id>", methods=["GET", "POST"])
+def create_event(profile_id):
     if request.method == "POST":
 
         username = session["user"]
+
+        pr = mongo.db.profiles.find_one({"_id": ObjectId(profile_id)})
+        print("dddddddddddd" ,pr["name"])
         # Populate event object from the form
         event = {
             "name": request.form.get("name").lower(),
             "time": request.form.get("time"),
             "location": request.form.get("location").lower(),
             "player": username,
+            "playername": pr["name"],
             "scout": ""
         }
 
@@ -364,7 +372,7 @@ def create_event():
         flash("create Event Successful!")
         return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
 
-    return render_template("create-event.html")
+    return render_template("create-event.html", profile_id=profile_id)
 
 ###########################################################################################################
 
@@ -394,6 +402,7 @@ def edit_event(event_id):
         "time": ev["time"],
         "location": ev["location"],
         "player": ev["player"],
+        "playername": ev["playername"],
         "scout": ev["scout"]
 
     }
@@ -411,6 +420,7 @@ def update_event(event_id):
         username = session["user"]
 
         ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
+        print("fffffffffffffffffffffff", ev)
         # Populate update event object
         update_event = {
             "_id": ObjectId(event_id),
@@ -418,6 +428,7 @@ def update_event(event_id):
             "time": request.form.get("eventtime"),
             "location": request.form.get("eventlocation"),
             "player": session["user"],
+            "playername": ev["playername"],
             "scout": ev["scout"]
         }
 
@@ -452,14 +463,15 @@ def player_profile(player_name):
             "user": username,
             "user_type": x["user_type"]
         }
-
-        ev_query = {"player": player_name}
+    print("gggggggggggggggg", player_name)
+    ev_query = {"playername": player_name}
 
     check_events = mongo.db.events.find(ev_query)
     events = []
-
+    print("check_events", check_events)
     for x in check_events:
         if "scout" in x:
+            print("scout")
             # Populate players event object
             event = {
                 "_id": x["_id"],
@@ -467,17 +479,20 @@ def player_profile(player_name):
                 "time": x["time"],
                 "location": x["location"],
                 "player": x["player"],
+                "playername": x["playername"],
                 "scout": x["scout"]
 
             }
         else:
             # Populate players event object if scout doesn't exist
+            print("no scout")
             event = {
                 "_id": x["_id"],
                 "name": x["name"],
                 "time": x["time"],
                 "location": x["location"],
-                "player": x["player"]
+                "player": x["player"],
+                "playername": x["playername"]
             }
         events.append(event)
 
@@ -491,6 +506,8 @@ def watch_event(event_id):
 
     username = session["user"]
 
+    user_type = session["user_type"]
+
     ev = mongo.db.events.find_one({"_id": ObjectId(event_id)})
     # Populate event object with scout
     event = {
@@ -499,12 +516,13 @@ def watch_event(event_id):
         "time": ev["time"],
         "location": ev["location"],
         "player": ev["player"],
+        "playername": ev["playername"],
         "scout": username
     }
     mongo.db.events.save(event)
     flash("watching event")
-    return redirect(url_for("player_profile", player_name=event["player"]))
-
+    return redirect(url_for("read_profile", username=username, user_type=user_type ))
+# player_name=event["player"]
 ###########################################################################################################
 
 
