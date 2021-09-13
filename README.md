@@ -289,9 +289,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 * Tested the form validation worked correctly on each of the above browsers
     * Results: The form correctly sent when the fields were completed as they should have been and did not when the fields had not been completed
 
-# Deployment
-
-## Git hub pages
+# Git hub pages
 
 1. Create a new repository or access an existing repository
 2. Click the green Gitpod button to launch the project in Gitpod
@@ -317,6 +315,9 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 1. Navigate to the main page of the repository you wish to fork
 2. Click the Fork button on the top right hand side of the page
+
+# Deployment
+
 
 ## Heroku
 
