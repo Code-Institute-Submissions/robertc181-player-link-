@@ -24,7 +24,7 @@
 
 # Summary
 
-Player Link is an online platform that will link football players with scouts, So that scouts can watch a football player and find out when they will be playing there next football games and more information about that player, such as current team , position , preffered foot etc. A player will be able to create an account with Player Link and put up information about themselves, they can also create an event which they can set a time place and name. If a scout searches for a player on Player Link they will be allowed to view a players events and click on the ones that they wish to go to. 
+Player Link is an online platform that will link football players with scouts, So that scouts can watch a football player and find out when they will be playing there next football games and more information about that player, such as current team , position , preffered foot etc. A player will be able to create an account with Player Link and put up information about themselves, they can also create an event which they can set a time place and name. If a scout searches for a player on Player Link they will be allowed to view a players events and click on the ones that they wish to watch. 
 
 A scout can also sign up with Player Link to find talented footballers and get more information about them and there football games. They will have a profile where they can search for players and view all players profiles and see thier events 
 
@@ -146,7 +146,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 1. Instead of creating to diferent profile types for a scout and a player I am now using a generic users database to store a users data where a user has a user_type which will be a player or a scout
 
-2. I have changed the data structure to have a users Db and a profiles db so a user registers and creates a user then can create profile to create thier profile
+2. I have changed the data structure to have a users collection and a profiles collection. A user can register and then fill out a profile form to create their profile
 
 
 # Features
@@ -170,7 +170,7 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 | search player     | A scout can search for players. | 
 | open player profile account     | A scout can open a players account and see all of thier events. | 
 | watch event     | A scout can click to watch an event and the player will see that he is going. |
-| going event     | A scout can see all the events that he has chosen to watch. | 
+| event being watched     | A scout can see all the events that he has chosen to watch. | 
 
 
 ## Features left to implement
@@ -180,15 +180,14 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 | follow player     | A scout could follow a player and keep up to date with the players events. | 
 | see scouts     | A player could see all the scouts that have followd him. | 
 | watched events     | A scout could see all the event that he has been to. | 
-| going events     | A scout could see all the event that he has been to. | 
 | positions     | a player could add what position he plays in | 
 
 # Bugs
 
 | Feature        | Detailes     | 
 | ------------- |:-------------:| 
-| navigation drob down & Delete button modal     | To get both the navigation dropdown and the delete button modal I had to use two versions of bootstrap so that both would work which may crete an error in the console but it does not detrement the app in any way and I have shown that I know why its there but have no way to change the outcome. |
-|  favicon    | For an unknow reason there is a favicon error in the console even tho I have not added a favicon ? | 
+| navigation drob down & Delete button modal     | To get both the navigation dropdown and the delete button modal I had to use two versions of bootstrap so that both would work which may crete an error in the console but it does not detrement the app in any way. |
+|  favicon    | For an unknown reason there is a favicon error in the console because I have not added a favicon ? | 
 
 
 # Technologies Used
@@ -204,8 +203,12 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 * Heroku
 * Jinja
 
+# View
+
+* It is reccomended to view this application at a resolution of 1920 x 1080, However it is fully responsive.
 
 ## Testing
+
 
 ### New site user's testing:
 
@@ -350,5 +353,5 @@ To deploy the app to Heroku from its GitHub repository, the following steps were
 
 ### Acknowledgements
 
-* My mentor Antonio Rodriguez who has been great help with guidance and support through the project
+* My mentor Antonio Rodriguez who has been great help with guidance and support throughout the project
 
