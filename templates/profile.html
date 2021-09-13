@@ -15,7 +15,6 @@
             <p><span class="bold">Date of birth : </span> {{ profile.DOB }}</p>
             <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
             <p><span class="bold">Current Team : </span> {{ profile.current_team }}</p>
-            <p><span class="bold">Position : </span> {{ profile.position }}</p>
             <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
 
             <div class="col">
@@ -67,11 +66,9 @@
                         <td>
                             <button class="bluebtn buttonsm "><a
                                     href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a></button>
-                            <button class="bluebtn buttonsm "><a
-                                    href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a></button>
+                            <button class="bluebtn buttonsm " data-toggle="modal" data-target="#event_modal_{{event._id}}">Delete</button>
 
                         </td>
-
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -79,7 +76,6 @@
         </div>
     </div>
 </div>
-
 {% else %}
 <div class="container-fluid headingtop">
     <div class="row">
@@ -159,7 +155,7 @@
 <div class="container-fluid headingtop">
     <div class="row">
         <div class="col">
-            <h2 class="title"> events your going to</h2>
+            <h2 class="title">Your Events</h2>
         </div>
     </div>
 </div>
@@ -183,7 +179,7 @@
                         <td>{{ event["name"] }}</td>
                         <td>{{ event["time"] }}</td>
                         <td>{{ event["location"] }}</td>
-                        <td>{{ event["player"] }}</td>
+                        <td>{{ event["playername"] }}</td>
                         <td>{{ event["scout"] }}</td>
 
 
@@ -196,7 +192,29 @@
 </div>
 
 {% endif %}
-
+{% for event in events %}
+<!-- Modal -->
+<div class="modal fade" id="event_modal_{{event._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your event {{ event["name"] }} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
+                <button type="button" class="btn btn-primary" ><a
+                    href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
 
 {% endblock %}

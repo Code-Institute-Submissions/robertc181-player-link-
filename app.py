@@ -147,7 +147,6 @@ def create_profile():
                 "current_team": request.form.get("current_team").lower(),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
-                "position": request.form.get("position"),
                 "user": session["user"],
                 "user_type": session["user_type"]
             }
@@ -193,7 +192,6 @@ def read_profile(username, user_type):
                 "current_team": x["current_team"],
                 "bio": x["bio"],
                 "gender": x["gender"],
-                "position": x["position"],
                 "user": username,
                 "user_type": x["user_type"]
             }
@@ -270,7 +268,6 @@ def edit_profile(profile_id):
             "current_team": check_profile["current_team"],
             "bio": check_profile["bio"],
             "gender": check_profile["gender"],
-            "position": check_profile["position"],
             "user": check_profile["user"],
             "user_type": check_profile["user_type"]
         }
@@ -323,7 +320,6 @@ def update_profile(profile_id):
                 "current_team": request.form.get("current_team").lower(),
                 "bio": request.form.get("bio").lower(),
                 "gender": request.form.get("gender").lower(),
-                "position": request.form.get("position"),
                 "user": session["user"],
                 "user_type": session["user_type"]
             }
@@ -459,7 +455,6 @@ def player_profile(player_name):
             "current_team": x["current_team"],
             "bio": x["bio"],
             "gender": x["gender"],
-            "position": x["position"],
             "user": username,
             "user_type": x["user_type"]
         }

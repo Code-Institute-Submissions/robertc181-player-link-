@@ -17,7 +17,7 @@ p{
     justify-content: center;
 
     position: absolute;
-    top: 10;
+    top: 50px;
     z-index: 1;
 }
 
@@ -134,6 +134,12 @@ a:hover{
     text-decoration: underline !important;
 
 }
+
+.scoutevents{
+    padding-top: 50px;
+}
+
+
 
 
 
