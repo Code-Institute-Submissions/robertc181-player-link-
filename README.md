@@ -318,33 +318,33 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 
 # Deployment
 
-
 ## Heroku
+
+### How to deploy to Heroku
 
 To deploy the app to Heroku from its GitHub repository, the following steps were taken:
 
 1. From the GitPod terminal, create requirements.txt and Procfile using these commands:
-
-     ```pip3 freeze --local > requirements.txt
+      ```
+     pip3 freeze --local > requirements.txt
      echo web: python app.py > Procfile
      ```
-
-2. Push these files to GitHub
-3. Log In to Heroku
-4. 4.Select Create new app from the dropdown in the Heroku dashboard
-5. Choose a unique name ('player_link') for the app and the location nearest to you
-6. Go to the Deploy tab and under Deployment method choose GitHub
-7. In Connect to GitHub enter your GitHub repository details and once found, click Connect
-8. Go to the Settings tab and under Config Vars choose Reveal Config Vars
-9. Enter the following keys and values, which must match those in the env.py file created earlier:
+3. Push these files to GitHub
+4. Log In to Heroku
+5. Select Create new app from the dropdown in the Heroku dashboard
+6. Choose a unique name for the app and the location nearest to you
+7. Go to the Deploy tab and under Deployment method choose GitHub
+8. In Connect to GitHub enter your GitHub repository details and once found, click Connect
+9. Go to the Settings tab and under Config Vars choose Reveal Config Vars
+10. Enter the following keys and values, which must match those in the settings.py file:
 
 | Key        | Value           | 
-| ------------- |:-------------:| 
+| ------------- |-------------| 
 | IP   | 0.0.0.0 | 
 | PORT     | 5000 | 
 | SECRET_KEY     | app secret key  | 
-| MONGO_URI     | mongodb+srv://root:dsxigyzwsao0sozm@myfirstcluster.n0en1.mongodb.net/player_link?retryWrites=true&w=majority | 
-| MONGO_DBNAME     | player_link | 
+| MONGO_URI     | mongo secret key | 
+| MONGO_DBNAME     | mongo database name | 
 
 10. Go back to the Deploy tab and under Automatic deploys choose Enable Automatic Deploys
 11. Under Manual deploy, select master and click Deploy Branch
