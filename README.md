@@ -289,19 +289,6 @@ My objective with Player Link is to firstly allow scouts who are struggling to f
 * Tested the form validation worked correctly on each of the above browsers
     * Results: The form correctly sent when the fields were completed as they should have been and did not when the fields had not been completed
 
-# Git hub pages
-
-1. Create a new repository or access an existing repository
-2. Click the green Gitpod button to launch the project in Gitpod
-3. Create an index.html file
-4. Add the file to the staging area using the git add Functional
-5. Commit the file using the git commit function, adding an appropriate commentary
-6. Push the file to GitHub using the git commit and git push functions
-7. Refresh your GitHub repository and click the 'Settings' tab
-8. Scroll to the GitHub Pages section and select a publishing source
-9. Click 'Save'
-10. Click the URL created within the Settings - GitHub Pages section
-
 ### To clone the repository for local deployment:
 
 1. On the main page of the repository, click the down arrow Code button
