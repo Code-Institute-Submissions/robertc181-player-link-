@@ -10,23 +10,23 @@
 <div class="container-fluid formcol">
     <div class="row">
         <form class="col-md-6 offset-md-3" method="POST" action="{{ url_for('update_event', event_id=event.event_id)}}">
-            <!-- profile pic -->
+            <!-- event name -->
             <div class="mb-3 col-md-6">
                 <label for="eventname" class="form-label">Event Name</label>
                 <input type="text" id="eventname" name="eventname" value="{{ event.name }}" class="form-control"
-                    minlength="3" maxlength="30">
+                    minlength="3" maxlength="30" required>
             </div>
             <!-- name -->
             <div class="mb-3 col-md-6">
                 <label for="eventtime" class="form-label">Event Time</label>
                 <input type="text" id="eventtime" name="eventtime" value="{{ event.time }}" class="form-control"
-                    minlength="3" maxlength="30">
+                    minlength="3" maxlength="30" required>
             </div>
             <!-- event location -->
             <div class="mb-3 col-md-6">
                 <label for="eventlocation" class="form-label">Event Location</label>
                 <input type="text" id="eventlocation" name="eventlocation" value="{{ event.location }}"
-                    class="form-control" minlength="3" maxlength="30">
+                    class="form-control" minlength="3" maxlength="30" required>
             </div>
             <button type="submit" class="bluebtn button">Submit</button>
         </form>
