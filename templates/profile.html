@@ -1,200 +1,165 @@
 {% extends "base.html" %}
 {% block content %}
 {% if profile.user_type == "player" %}
-<div class="container-fluid headingtop">
-    <div class="row">
-        <div class="col">
-            <h2 class="title">{{ profile.user }}'s Profile</h2>
-        </div>
+<button class="bluebtn button buttonsm editbtn">
+    <a href="{{ url_for('edit_profile', profile_id=profile._id) }}">Edit Profile</a>
+</button>
+<div class="container pt-5">
+    <div class="col mx-auto pt-5 headtop">
+        <h1>
+            {{ profile.user }}'s Profile
+        </h1>
+    </div>
+    <div class="col pt-5">
+        <p><span class="bold">Name : </span> {{ profile.name }}</p>
+        <p><span class="bold">Date of birth : </span> {{ profile.DOB }}</p>
+        <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
+        <p><span class="bold">Current Team : </span> {{ profile.current_team }}</p>
+        <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
     </div>
 </div>
-<div class="container-fluid profileentry">
+<div class="container mx-auto">
     <div class="row">
-        <div class="col leftside">
-            <p><span class="bold">Name : </span> {{ profile.name }}</p>
-            <p><span class="bold">Date of birth : </span> {{ profile.DOB }}</p>
-            <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
-            <p><span class="bold">Current Team : </span> {{ profile.current_team }}</p>
-            <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
-
-            <div class="col">
-                <button class="bluebtn button right"><a
-                        href="{{ url_for('edit_profile', profile_id=profile._id) }}">edit
-                        Profile</a></button>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<hr>
-
-<div class="container-fluid headingtop">
-    <div class="row">
-        <div class="col">
-            <h2 class="title">Events</h2>
+        <div class="col-sm-12 text-center mt-3 ">
+            <h2 class="logo-font"> {{ profile.user }}'s Events</h2>
         </div>
     </div>
 </div>
 
-<div class="container">
+<div class="container centerbtn pt-3">
     <div class="row">
-        <div class="col">
-            <div class="col center bottom">
+        <div class="col-sm-12">
+            <div class="col ">
                 <button class="bluebtn button "><a href="{{ url_for('create_event',  profile_id=profile._id) }}">Create
                         Event</a></button>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Event Name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Player</th>
-                        <th scope="col">Watchers</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for event in events %}
-                    <tr>
-                        <td>{{ event["name"] }}</td>
-                        <td>{{ event["time"] }}</td>
-                        <td>{{ event["location"] }}</td>
-                        <td>{{ event["player"] }}</td>
-                        <td>{{ event["scout"] }}</td>
-                        <td>
-                            <button class="bluebtn buttonsm "><a
-                                    href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a></button>
-                            <button class="bluebtn buttonsm " data-toggle="modal" data-target="#event_modal_{{event._id}}">Delete</button>
-
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        {% for event in events %}
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <div class="box">
+                <div class="col-sm-12 mx-auto text-center pb-3">
+                    <h5>{{ event["name"] }}</h5>
+                </div>
+                <p>Time : <span class="grey">{{ event["time"] }}</span></p>
+                <p>Location : <span class="grey">{{ event["location"] }}</span></p>
+                {% if event["scout"] %}
+                <p>Scout Watching : <span class="grey">{{ event["scout"] }}</span></p>
+                {% else %}
+                <div class="col-sm-12 mx-auto">
+                    <p class="text-danger"> No Scouts Watching</p>
+                </div>
+                {% endif %}
+                <small class="ml-3">
+                    <a class="text-dark" href="{{ url_for('edit_event', event_id=event._id) }}">Edit</a> |
+                    <a class="text-danger" data-toggle="modal" data-target="#event_modal_{{event._id}}">Delete</a>
+                </small>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% else %}
-<div class="container-fluid headingtop">
-    <div class="row">
-        <div class="col">
-            <h2 class="title">{{ profile.user }}'s Profile</h2>
-        </div>
+<button class="bluebtn button buttonsm editbtn">
+    <a href="{{ url_for('edit_profile', profile_id=profile._id) }}">Edit Profile</a>
+</button>
+<div class="container pt-5">
+    <div class="col mx-auto pt-5 headtop">
+        <h1>
+            {{ profile.user }}'s Profile
+        </h1>
+    </div>
+    <div class="col pt-5">
+        <p><span class="bold">Name : </span> {{ profile.name }}</p>
+        <p><span class="bold">Cert : </span> {{ profile.cert }}</p>
+        <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
+        <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
     </div>
 </div>
-
-<div class="container-fluid profileentry">
-    <div class="row">
-        <div class="col leftside">
-            <p><span class="bold">Name : </span> {{ profile.name }}</p>
-            <p><span class="bold">Cert : </span> {{ profile.cert }}</p>
-            <p><span class="bold">Gender : </span> {{ profile.gender }}</p>
-            <p><span class="bold">Bio : </span> {{ profile.bio }}</p>
-
-            <div class="col">
-                <button class="bluebtn button right"><a
-                        href="{{ url_for('edit_profile', profile_id=profile._id) }}">edit
-                        Profile</a></button>
+<div class="container-fluid pt-5">
+    <div class="row pt-5">
+        <div class="col bottomboxl pt-5">
+            <div class="col-sm-12">
+                <div class="col logo-font">
+                    <h1>
+                        Search
+                    </h1>
+                </div>
             </div>
+            <div class="col mx-auto">
+                <div class="col ">
+                    <form class="example"
+                        action="{{ url_for('read_profile', username=profile.user, user_type=profile.user_type)  }}"
+                        style="margin:auto;max-width:300px" method="POST">
+                        <label for="query">Search for players</label>
+                        <input type="text" name="query" id="query">
+                        <button class="button1 button"><i class="fa fa-search"></i></button>
+                    </form>
+                    <div class="col pt-5">
+                        <table class="table bg-light">
+                            <thead>
+                                <tr>
+                                    <th scope="col mx-auto">Player Name</th>
+                                    <th scope="col">Current Team</th>
+                                    <th scope="col">-</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for player in players %}
+                                <tr>
+                                    <td class="tableinfo">{{ player["name"] }}</td>
+                                    <td class="tableinfo">{{ player["current_team"] }}</td>
+                                    <td><button class="bluebtn button buttonsm"><a
+                                                href="{{ url_for('player_profile', player_name=player.name)}}">View</a></button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
 
-        </div>
-    </div>
-</div>
-
-<hr>
-
-
-<div class="container-fluid headingtop">
-    <div class="row">
-        <div class="col">
-            <h2 class="title">Search</h2>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col center">
-            <form action="{{ url_for('read_profile', username=profile.user, user_type=profile.user_type)  }}"
-                method="POST">
-                <label for="query">Search for players</label>
-                <input type="text" name="query" id="query">
-                <button class="bluebtn buttonsm">Search</button>
-            </form>
-            <div class="col top">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Player Name</th>
-                            <th scope="col">Current Team</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for player in players %}
-                        <tr>
-                            <td>{{ player["name"] }}</td>
-                            <td>{{ player["current_team"] }}</td>
-                            <td><button class="bluebtn button"><a
-                                        href="{{ url_for('player_profile', player_name=player.name)}}">View</a></button>
-                            </td>
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+        <div class="col bottomboxr pt-5 ">
+            <div class="col-sm-12">
+                <div class="col logo-font">
+                    <h1>
+                        My events
+                    </h1>
+                </div>
+            </div>
 
-<hr>
-
-<div class="container-fluid headingtop">
-    <div class="row">
-        <div class="col">
-            <h2 class="title">Your Events</h2>
-        </div>
-    </div>
-</div>
-
-<div class="container scoutevents">
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Event Name</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Location</th>
-                        <th scope="col">Player</th>
-                        <th scope="col">Watching</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="container pt-5">
+                <div class="row">
                     {% for event in events %}
-                    <tr>
-                        <td>{{ event["name"] }}</td>
-                        <td>{{ event["time"] }}</td>
-                        <td>{{ event["location"] }}</td>
-                        <td>{{ event["playername"] }}</td>
-                        <td>{{ event["scout"] }}</td>
-
-
-                    </tr>
+                    <div class="col-sm-8 mx-auto">
+                        <div class="box">
+                            <div class="col-sm-12 mx-auto text-center pb-3">
+                                <h5>{{ event["name"] }}</h5>
+                            </div>
+                            <p>Time : <span class="grey">{{ event["time"] }}</span></p>
+                            <p>Location : <span class="grey">{{ event["location"] }}</span></p>
+                            <p>Player : <span class="grey">{{ event["playername"] }}</span></p>
+                        </div>
+                    </div>
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
+
 
 {% endif %}
 {% for event in events %}
 <!-- Modal -->
-<div class="modal fade" id="event_modal_{{event._id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="event_modal_{{event._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,9 +172,12 @@
                 Are you sure you want to delete your event {{ event["name"] }} ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">cancel</button>
-                <button type="button" class="btn btn-primary" ><a
-                    href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    cancel
+                <button>
+                <button type="button" class="btn btn-primary">
+                    <a href="{{ url_for('delete_event', event_id=event._id)  }}">Delete </a>
+                </button>
             </div>
         </div>
     </div>
