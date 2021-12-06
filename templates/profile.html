@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 {% if profile.user_type == "player" %}
-<button class="bluebtn button buttonsm editbtn">
-    <a href="{{ url_for('edit_profile', profile_id=profile._id) }}">Edit Profile</a>
-</button>
+
+<a class="bluebtn button buttonsm editbtn" href="{{ url_for('edit_profile', profile_id=profile._id) }}" >Edit Profile</a>
 <div class="container pt-5">
     <div class="col mx-auto pt-5 headtop">
         <h1>
@@ -30,8 +29,8 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="col ">
-                <button class="bluebtn button "><a href="{{ url_for('create_event',  profile_id=profile._id) }}">Create
-                        Event</a></button>
+                        <a class="bluebtn button" href="{{ url_for('create_event',  profile_id=profile._id) }}">Create
+                            Event</a>
             </div>
         </div>
     </div>
@@ -63,9 +62,9 @@
     </div>
 </div>
 {% else %}
-<button class="bluebtn button buttonsm editbtn">
-    <a href="{{ url_for('edit_profile', profile_id=profile._id) }}">Edit Profile</a>
-</button>
+
+<a class="bluebtn button buttonsm editbtn" href="{{ url_for('edit_profile', profile_id=profile._id) }}" >Edit Profile</a>
+
 <div class="container pt-5">
     <div class="col mx-auto pt-5 headtop">
         <h1>
@@ -112,8 +111,7 @@
                                 <tr>
                                     <td class="tableinfo">{{ player["name"] }}</td>
                                     <td class="tableinfo">{{ player["current_team"] }}</td>
-                                    <td><button class="bluebtn button buttonsm"><a
-                                                href="{{ url_for('player_profile', player_name=player.name)}}">View</a></button>
+                                    <td><a class="bluebtn button" href="{{ url_for('player_profile', player_name=player.name)}}">View</a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -172,12 +170,10 @@
                 Are you sure you want to delete your event {{ event["name"] }} ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                <a class="text-danger" data-dismiss="modal">
                     cancel
-                <button>
-                <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('delete_event', event_id=event._id)  }}">Delete </a>
-                </button>
+                </a>
+                <a  type="button" class="bluebtn button buttonsm" href="{{ url_for('delete_event', event_id=event._id)  }}">Delete</a>
             </div>
         </div>
     </div>

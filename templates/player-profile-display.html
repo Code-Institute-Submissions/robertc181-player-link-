@@ -22,60 +22,7 @@
             </div>
         </div>
     </div>
-<!-- <hr>
 
-<div class="container-fluid headingtop">
-        <div class="row">
-                <div class="col">
-                        <h2 class="title">Events</h2>
-                </div>
-        </div>
-</div>
-
-
-<div class="container">
-        <div class="row">
-                <div class="col">
-                        <table class="table">
-                                <thead>
-                                        <tr>
-                                                <th scope="col">Event Name</th>
-                                                <th scope="col">Time</th>
-                                                <th scope="col">Location</th>
-                                                <th scope="col">Player</th>
-                                                <th scope="col">Scout</th>
-                                        </tr>
-                                </thead>
-                                <tbody>
-                                        {% if events == [] %}
-                                        <div class="col">
-                                                <p>{{ profile.name }} has no events yet</p>
-                                        </div>
-                                        {% else %}
-                                        {% for event in events %}
-                                        <tr>
-                                                <td>{{ event["name"] }}</td>
-                                                <td>{{ event["time"] }}</td>
-                                                <td>{{ event["location"] }}</td>
-                                                <td>{{ event["player"] }}</td>
-                                                {% if event["scout"] %}
-                                                <td>{{ event["scout"] }}</td>
-
-                                                {% else %}
-                                                <td>
-                                                        <button class="bluebtn buttonsm "><a
-                                                                        href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a></button>
-
-                                                </td>
-                                                {% endif %}
-                                        </tr>
-                                        {% endfor %}
-                                        {% endif %}
-                                </tbody>
-                        </table>
-                </div>
-        </div>
-</div> -->
 <div class="container">
         <div class="row">
             {% for event in events %}
@@ -90,8 +37,7 @@
                     <p>Scout Watching : <span class="grey">{{ event["scout"] }}</span></p>
                     {% else %}
                     <div class="col-sm-12 mx-auto">
-                        <button class="bluebtn buttonsm "><a
-                                href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a></button>
+                                <a class="bluebtn buttonsm" href="{{ url_for('watch_event', event_id=event._id)  }}">Watch</a>
 
                     </div>
                     {% endif %}
