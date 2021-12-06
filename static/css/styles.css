@@ -1,49 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Audiowide&family=M+PLUS+1p:wght@300&family=News+Cycle&family=Squada+One&family=Ubuntu:wght@300&display=swap');
+
 p{
     color:black;
 }
 
 
-.callout-container {
-    height: 100vh;
+/* ----------------------------------------------- buttons  */
 
-    background:no-repeat top center;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: absolute;
-    top: 50px;
-    z-index: 1;
+.messages{
+    font-family: 'Nunito', sans-serif;
+    color: red;
 }
 
-.display-front{
-    z-index: 2;
+.messages .md{
+    font-size: 15px;
 }
 
-.title{
-    letter-spacing: 2px;
-    font-weight: 500;
-}
-
-.bluebtn{
-    background-color: #6f08ff ;
-    border: solid 2px #ffffff;
-    color: white;
-}
-
-.bluebtn:hover{
-    border: solid 2px #6200EE;
-    color: #ffffff;
-}
-
-a{
-    color: white;
-    text-decoration: none;
+.messages .sm{
+    font-size: 13px;
 }
 
 a:hover{
@@ -77,13 +51,225 @@ a:hover{
 
 }
 
+.bluebtn{
+    background-color: rgb(90,247,220) ;
+    border: solid 2px rgb(90,247,220);
+    color: rgb(0, 0, 0);
+}
+
+.bluebtn:hover{
+    background-color: #3fceb6 ;
+    border: solid 2px rgb(90,247,220);
+    color: #000000;
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+.register{
+    color: black !important;
+}
+
+
+
+
+/* ----------------------------------------------- nav  */
+
+.navbarnav{
+    background-color: black;
+    color: white !important;
+    
+}
+
+/* ----------------------------------------------- home  */
+
+.callout-container {
+    height: 100vh;
+
+    background: url("../img/image-dark (6).png") no-repeat top center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    top: 0;
+
+}
+
+.jumbotron{
+    width: 100%;
+    background-color: transparent;
+    color: white;
+}
+
+.jumbotron .p{
+    color: white;
+}
+
+.heading{
+    font-size: 70px;
+}
+
+.phead{
+    color: white;
+}
+
+/* ----------------------------------------------- fonts  */
+
+.logo-font{
+    font-family: 'Audiowide', cursive;
+}
+
+/* ----------------------------------------------- player profile  */
+
+.headtop{
+    font-family: 'Audiowide', cursive;
+
+}
+
+.editbtn{
+    position: absolute;
+    top: 120px;
+    right: 30px;
+}
+
+.createevent{
+    position: relative;
+    top: 0;
+    right: 0;
+}
+
+.sessionday{
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    font-weight: bold;
+}
+
+.sessionname{
+    position: absolute;
+    top: 90px;
+    left: 30px;
+    color: white;
+}
+
+
+.centerbtn{
+    text-align: center;
+}
+
+.grey{
+    color: grey;
+}
+
+.box{
+    background-color: rgb(223, 223, 223);
+    border-radius: 30px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.ulevent{
+    display: flex;
+    justify-content:space-around;
+    list-style-type:none;
+    padding: 30px;
+}
+
+/* ----------------------------------------------- search form  */
+
+* {
+    box-sizing: border-box;
+  }
+  
+  form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid #f1f1f1;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  form.example button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #5af7dc;
+    color: white;
+    font-size: 17px;
+    border: 1px solid #5af7dc;
+    border-left: none;
+    cursor: pointer;
+  }
+  
+  form.example button:hover {
+    background: #3fceb6;
+  }
+  
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+/* ----------------------------------------------- scout profile  */
+
+
+.bottomboxl{
+    width: 100%;
+    background-color: #e2e2e2;
+    padding-bottom: 50px;
+}
+
+.bottomboxr{
+    width: 100%;
+    background-color: #eeeeeee0;
+    padding-bottom: 50px;
+}
+.eventtitle tr{
+    background-color: red;
+}
+
+.tableinfo{
+    padding-top: 10px;
+}
+/* ----------------------------------------------- buttons  */
+
+/* ----------------------------------------------- buttons  */
+
+/* ----------------------------------------------- buttons  */
+
+
+.display-front{
+    z-index: 2;
+}
+
+.title{
+    letter-spacing: 2px;
+    font-weight: 500;
+}
+
+
+
+
 .center{
     text-align: center;
 }
 
 .flashcon{
-    background-color: #6200EE;
-    color: white;
+    background-color: #3ef5f7;
+    color: black;
+    font-family: 'Ubuntu', sans-serif;
+    padding-top: 10px;
+    padding-bottom: 2px;
 }
 
 .formcol{
@@ -138,6 +324,7 @@ a:hover{
 .scoutevents{
     padding-top: 50px;
 }
+
 
 
 
