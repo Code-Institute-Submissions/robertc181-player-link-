@@ -173,82 +173,87 @@ def create_profile():
 
 @app.route("/read-profile/<username>/<user_type>", methods=["GET", "POST"])
 def read_profile(username, user_type):
+    if "user" in session:
 
-    query = {"user": username}
+        query = {"user": username}
 
-    check_profile = mongo.db.profiles.find(query)
+        check_profile = mongo.db.profiles.find(query)
 
-    if user_type == "player":
 
-        for x in check_profile:
-            # Using datetime to format date from date picker
-            dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
-            date = dt.strftime("%d-%m-%Y")
-            # Getting profile data from mongo
-            profile = {
-                "_id": x["_id"],
-                "name": x["name"],
-                "DOB": date,
-                "current_team": x["current_team"],
-                "bio": x["bio"],
-                "gender": x["gender"],
-                "user": username,
-                "user_type": x["user_type"]
-            }
+        if user_type == "player":
 
-        ev_query = {"player": username}
-
-        check_events = mongo.db.events.find(ev_query)
-        events = []
-        # Getting event data from mongo
-        for x in check_events:
-            if "scout" in x:
-                event = {
+            for x in check_profile:
+                # Using datetime to format date from date picker
+                dt = datetime.datetime.strptime(x["DOB"], '%Y-%m-%d')
+                date = dt.strftime("%d-%m-%Y")
+                # Getting profile data from mongo
+                profile = {
                     "_id": x["_id"],
                     "name": x["name"],
-                    "time": x["time"],
-                    "location": x["location"],
-                    "player": x["player"],
-                    "playername": x["playername"],
-                    "scout": x["scout"]
-
+                    "DOB": date,
+                    "current_team": x["current_team"],
+                    "bio": x["bio"],
+                    "gender": x["gender"],
+                    "user": username,
+                    "user_type": x["user_type"]
                 }
-            else:
-                event = {
+
+            ev_query = {"player": username}
+
+            check_events = mongo.db.events.find(ev_query)
+            events = []
+            # Getting event data from mongo
+            for x in check_events:
+                if "scout" in x:
+                    event = {
+                        "_id": x["_id"],
+                        "name": x["name"],
+                        "time": x["time"],
+                        "location": x["location"],
+                        "player": x["player"],
+                        "playername": x["playername"],
+                        "scout": x["scout"]
+
+                    }
+                else:
+                    event = {
+                        "_id": x["_id"],
+                        "name": x["name"],
+                        "time": x["time"],
+                        "location": x["location"],
+                        "player": x["player"],
+                        "playername": x["playername"]
+                    }
+                events.append(event)
+
+        else:
+            # Getting  watched event data from mongo if user_type is scout
+            events = list(mongo.db.events.find({"scout":username}))
+            
+            # Getting profile data from mongo if user_type is scout
+            for x in check_profile:
+                profile = {
                     "_id": x["_id"],
                     "name": x["name"],
-                    "time": x["time"],
-                    "location": x["location"],
-                    "player": x["player"],
-                    "playername": x["playername"]
+                    "bio": x["bio"],
+                    "gender": x["gender"],
+                    "cert": x["cert"],
+                    "user": username,
+                    "user_type": x["user_type"]
                 }
-            events.append(event)
+
+        if request.method == "POST":
+            # Finding players from mongo in search input
+            query = request.form.get("query")
+            players = list(mongo.db.profiles.find(
+                {"name": {'$regex': query}, "user_type": "player"}))
+        else:
+            players = []
+        return render_template('profile.html', profile=profile, events=events, players=players)
 
     else:
-        # Getting  watched event data from mongo if user_type is scout
-        events = list(mongo.db.events.find({"scout":username}))
-        
-        # Getting profile data from mongo if user_type is scout
-        for x in check_profile:
-            profile = {
-                "_id": x["_id"],
-                "name": x["name"],
-                "bio": x["bio"],
-                "gender": x["gender"],
-                "cert": x["cert"],
-                "user": username,
-                "user_type": x["user_type"]
-            }
 
-    if request.method == "POST":
-        # Finding players from mongo in search input
-        query = request.form.get("query")
-        players = list(mongo.db.profiles.find(
-            {"name": {'$regex': query}, "user_type": "player"}))
-    else:
-        players = []
-    return render_template('profile.html', profile=profile, events=events, players=players)
-
+        return redirect(url_for("login"))
 ###########################################################################################################
 
 
@@ -290,15 +295,19 @@ def edit_profile(profile_id):
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
+    if "user" in session:
 
-    username = session["user"]
-    user_type = session["user_type"]
-    # Rendering the profile 
-    if session["user"] and session["user_type"]:
-        return render_template("profile.html", username=username,
-                               user_type=user_type)
+        username = session["user"]
+        user_type = session["user_type"]
+        profile = mongo.db.profiles.find_one({"user":username})
+        # Rendering the profile 
+        if session["user"] and session["user_type"]:
+            return render_template("profile.html", username=username,
+                                user_type=user_type, profile=profile)
 
-    return redirect(url_for("login"))
+    else:
+
+        return redirect(url_for("login"))
 
 ###########################################################################################################
 
@@ -516,4 +525,4 @@ def watch_event(event_id):
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
-            debug=False)
+            debug=True)
