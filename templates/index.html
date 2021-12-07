@@ -8,7 +8,7 @@
         {% if session.user %}
         <h1 class="p-light p-dark jumbotron-header heading logo-font">Identify | Link | Talent</h1>
         <p class="lead phead">Welcome to Player Link</p>
-        <button class="bluebtn button"><a href="" class="register">My Profile</a></button>
+        <button class="bluebtn button"><a href="{{ url_for('profile' , username=session.user) }}" class="register">My Profile</a></button>
         {% else %}
         <h1 class="p-light p-dark jumbotron-header heading logo-font">Identify | Link | Talent</h1>
         <p class="lead phead">Create an account now and start your scouting experience</p>
