@@ -8,11 +8,11 @@
         {% if session.user %}
         <h1 class="p-light p-dark jumbotron-header heading logo-font">Identify | Link | Talent</h1>
         <p class="lead phead">Welcome to Player Link</p>
-        <button class="bluebtn button"><a href="{{ url_for('profile' , username=session.user) }}" class="register">My Profile</a></button>
+        <a class="bluebtn button" href="{{ url_for('profile' , username=session.user) }}"> My Profile</a>
         {% else %}
         <h1 class="p-light p-dark jumbotron-header heading logo-font">Identify | Link | Talent</h1>
-        <p class="lead phead">Create an account now and start your scouting experience</p>
-        <a class="bluebtn button" href="{{ url_for('register') }}">register</a>
+        <p class="lead phead">Welcome to Player Link We are a Football agencey connecting players and scouts togeather.<br>Create an account now and start your scouting experience.</p>
+        <a class="bluebtn button mt-2" href="{{ url_for('register') }}">register</a>
         {% endif %}
     </section>
 </div>
