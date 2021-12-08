@@ -5,7 +5,9 @@ from flask import (
     redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import (
+    generate_password_hash, check_password_hash ) 
+   
 
 
 if os.path.exists("env.py"):
@@ -20,7 +22,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
-###########################################################################################################
+#####################################################
 
 
 @app.route("/")
@@ -29,7 +31,7 @@ def index():
     users = mongo.db.users.find()
     return render_template("index.html", users=users)
 
-###########################################################################################################
+####################################################
 
 # REGISTER CODE
 
@@ -56,11 +58,12 @@ def register():
         session["user"] = request.form.get("username").lower()
         session["user_type"] = request.form.get("user_type").lower()
         flash("Registration Successful!")
-        return redirect(url_for("registered", username=session["user"], user_type=session["user_type"]))
+        return redirect(url_for("registered", 
+            username=session["user"], user_type=session["user_type"]))
 
     return render_template("register.html")
 
-###########################################################################################################
+#################################################
 
 
 @app.route("/registered/<username>/<user_type>", methods=["GET", "POST"])
@@ -69,12 +72,12 @@ def registered(username, user_type):
     user_type = session["user_type"]
 
     if session["user"]:
-        return render_template("create-profile.html", username=username, user_type=user_type)
+        return render_template("create-profile.html", 
+            username=username, user_type=user_type)
 
     return redirect(url_for("login"))
 
-###########################################################################################################
-
+####################################################
 # LOGIN CODE
 
 
@@ -91,7 +94,9 @@ def login():
                 session["user"] = request.form.get("username").lower()
                 session["user_type"] = check_user["user_type"]
                 flash("Welcome, {}".format(request.form.get("username")))
-                return redirect(url_for("read_profile", profilename=session["user"], username=session["user"], user_type=session["user_type"]))
+                return redirect(url_for("read_profile", 
+                    profilename=session["user"], username=session["user"],
+                    user_type=session["user_type"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -104,7 +109,7 @@ def login():
 
     return render_template("login.html")
 
-###########################################################################################################
+####################################################
 
 
 @app.route("/logout")
@@ -124,7 +129,7 @@ def logout():
         return redirect(url_for("index"))
 
 
-###########################################################################################################
+####################################################
 
 # PROFILE CODE
 @app.route("/create-profile", methods=["GET", "POST"])
@@ -164,11 +169,12 @@ def create_profile():
 
         mongo.db.profiles.insert(create_profile)
         flash("create Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=user_type))
+        return redirect(url_for("read_profile", 
+            username=username, user_type=user_type))
 
     return render_template("create-profile.html")
 
-###########################################################################################################
+##################################################
 
 
 @app.route("/read-profile/<username>/<user_type>", methods=["GET", "POST"])
@@ -228,7 +234,8 @@ def read_profile(username, user_type):
 
         else:
             # Getting  watched event data from mongo if user_type is scout
-            events = list(mongo.db.events.find({"scout":username}))
+            events = list(
+                mongo.db.events.find({"scout":username}))
             
             # Getting profile data from mongo if user_type is scout
             for x in check_profile:
@@ -249,18 +256,20 @@ def read_profile(username, user_type):
                 {"name": {'$regex': query}, "user_type": "player"}))
         else:
             players = []
-        return render_template('profile.html', profile=profile, events=events, players=players)
+        return render_template('profile.html', 
+            profile=profile, events=events, players=players)
 
     else:
 
         return redirect(url_for("login"))
-###########################################################################################################
+####################################################
 
 
 @app.route("/edit-profile/<profile_id>", methods=["GET", "POST"])
 def edit_profile(profile_id):
 
-    check_profile = mongo.db.profiles.find_one({"_id": ObjectId(profile_id)})
+    check_profile = mongo.db.profiles.find_one(
+        {"_id": ObjectId(profile_id)})
 
     if session["user_type"] == "player":
         # Populate update profile object
@@ -290,7 +299,7 @@ def edit_profile(profile_id):
 
     return render_template("edit-profile.html", profile=profile)
 
-###########################################################################################################
+################################################
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -309,8 +318,7 @@ def profile(username):
 
         return redirect(url_for("login"))
 
-###########################################################################################################
-
+######################################################
 
 @app.route("/update-profile/<profile_id>", methods=["GET", "POST"])
 def update_profile(profile_id):
@@ -346,11 +354,11 @@ def update_profile(profile_id):
 
         mongo.db.profiles.save(update_profile)
         flash("update Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+        return redirect(url_for("read_profile", 
+            username=username, user_type=session["user_type"]))
 
 
-###########################################################################################################
-
+####################################################
 # EVENTS CODE
 
 @app.route("/create-event/<profile_id>", methods=["GET", "POST"])
@@ -372,11 +380,12 @@ def create_event(profile_id):
 
         mongo.db.events.insert(event)
         flash("create Event Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+        return redirect(url_for("read_profile",
+            username=username, user_type=session["user_type"]))
 
     return render_template("create-event.html", profile_id=profile_id)
 
-###########################################################################################################
+######################################################
 
 
 @app.route("/delete-event/<event_id>")
@@ -388,9 +397,10 @@ def delete_event(event_id):
     # Removing event data from mongo
     mongo.db.events.remove(ev)
     flash("delete Event Successful!")
-    return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+    return redirect(url_for("read_profile", 
+        username=username, user_type=session["user_type"]))
 
-###########################################################################################################
+################################################
 
 
 @app.route("/edit-event/<event_id>", methods=["GET"])
@@ -411,7 +421,7 @@ def edit_event(event_id):
 
     return render_template("edit-event.html", event=event)
 
-###########################################################################################################
+##################################################
 
 
 @app.route("/update-event/<event_id>", methods=["POST"])
@@ -435,10 +445,10 @@ def update_event(event_id):
 
         mongo.db.events.save(update_event)
         flash("update Successful!")
-        return redirect(url_for("read_profile", username=username, user_type=session["user_type"]))
+        return redirect(url_for("read_profile", 
+            username=username, user_type=session["user_type"]))
 
-###########################################################################################################
-
+####################################################
 
 @app.route("/player-profile/<player_name>", methods=["GET", "POST"])
 def player_profile(player_name):
@@ -492,9 +502,10 @@ def player_profile(player_name):
             }
         events.append(event)
 
-    return render_template('player-profile-display.html', profile=profile, events=events)
+    return render_template('player-profile-display.html', 
+        profile=profile, events=events)
 
-###########################################################################################################
+##################################################
 
 
 @app.route("/watch-event/<event_id>", methods=["GET"])
@@ -517,9 +528,10 @@ def watch_event(event_id):
     }
     mongo.db.events.save(event)
     flash("watching event")
-    return redirect(url_for("read_profile", username=username, user_type=user_type ))
-# player_name=event["player"]
-###########################################################################################################
+    return redirect(url_for("read_profile", 
+        username=username, user_type=user_type ))
+
+#####################################################
 
 
 if __name__ == "__main__":
